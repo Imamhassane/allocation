@@ -11,6 +11,7 @@ use App\Manager\ChambreManager;
 use App\Core\AbstractController;
 use App\Entity\Pavillon;
 use App\Repository\ChambreRepository;
+use App\Repository\EtudiantRepository;
 use App\Repository\PavillonRepository;
 
 if(Role::isConnected()==true){
@@ -26,8 +27,13 @@ if(Role::isConnected()==true){
         }
 
         public  function listeChambre(){
-            $chambres=$this->ChamRepo->findAll();
-            $this->render("chambre/liste.chambre.html.php",["chambres"=>$chambres]);
+            $url=$this->request->getUrl();
+            if($url[0]=='chambre'){
+                $chambres=$this->ChamRepo->findChambreByEtat();
+                $ChambreAndPavillon=$this->ChamRepo->FindChambreAndPavillon();
+            }
+            $this->render("chambre/liste.chambre.html.php",["chambres"=>$chambres,"url"=>$url,"ChambreAndPavillon"=>$ChambreAndPavillon]);    
+
         } 
 
         public function addChambre(){
@@ -35,13 +41,27 @@ if(Role::isConnected()==true){
             $this->render("chambre/ajout.chambre.html.php",["pavillons"=>$pavillons]);
         }
 
+        public function chambreEtudiant(Request $request){
+            $chamEtu = new EtudiantRepository;
+            $url = $request->getUrl();
+            $id=$request->query();
+            $id=$id[0];
+            $getEtudiant= $chamEtu->findEtudiantByChambre($id);
+            $this->render("etudiant/liste.etudiant.html.php",["url"=>$url,"getEtudiant"=>$getEtudiant]);
+
+        }
+      
 
         public function edit(){
             $id=$this->request->query();
             $id=$id[0];
             $restor=$this->ChamRepo->findById($id);
+
+            if (!$restor[0]->idpavillon==null) {
+                $restorPavillons=$this->pavi->findById($restor[0]->idpavillon);
+            }
             $pavillons = $this->pavi->findAll();
-            $this->render("chambre/ajout.chambre.html.php",["restor"=>$restor,"pavillons"=>$pavillons]);
+            $this->render("chambre/ajout.chambre.html.php",["restor"=>$restor,"pavillons"=>$pavillons,"restorPavillons"=>$restorPavillons]);
         }
 
 
@@ -79,7 +99,11 @@ if(Role::isConnected()==true){
                     $this->redirect("chambre/listeChambre"); 
                 }else{
                     Session::setSession("errors",$this->validator->getErreurs() );
-                    $this->redirect("chambre/addChambre");
+                    if((int)$id != 0){
+                        $this->redirect("chambre/edit/".$id);
+                     }elseif((int)$id==0){
+                         $this->redirect("chambre/addChambre");
+                     }
                 }
             
             }  
@@ -98,11 +122,11 @@ if(Role::isConnected()==true){
                 $chambres->setNumChambre($getChambre[0]->numchambre);
                 $chambres->setNumEtage($getChambre[0]->numetage);
                 $chambres->setTypeChambre($getChambre[0]->typechambre);
-                $chambres->setIdPavillon($getChambre[0]->setIdPavillon);
+                $chambres->setIdPavillon($getChambre[0]->idpavillon);
                 $chambres->setEtat('archivee');
                 $chambres=$chambres->fromArrayUpdate($chambres);
                 $main->update($chambres);
-                //var_dump($chambres  );
+              //  var_dump($chambres  );
             }
            $this->redirect("chambre/listeChambre");
         }

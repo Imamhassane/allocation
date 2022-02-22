@@ -13,6 +13,7 @@ body{
     font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 0;
+    
 }
 body:focus{
   outline: none;
@@ -25,7 +26,10 @@ body:focus{
     justify-content: center;
     width: $fullWidth;
     min-height: $fullWidth;
-    padding: 20px;
+    padding: 10px;
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
     #formContent{
         -webkit-border-radius: 10px 10px 10px 10px;
         border-radius: 10px 10px 10px 10px;
@@ -91,6 +95,11 @@ input[type=button] {
     -webkit-border-radius: 5px 5px 5px 5px;
     border-radius: 5px 5px 5px 5px;
     margin: 5px 20px 40px 20px;
+}
+button{
+    @extend input[type=button];
+    margin: 0;
+    padding: 10px 20px;
 }
 
 input[type=submit],
@@ -392,6 +401,8 @@ nav{
     text-align: center;
     td {
         padding: 18px 20px;
+        text-align: center;
+
         a{
             text-decoration: none;
             color: #000;
@@ -445,3 +456,6 @@ nav{
         width: $widthRow;
     }
 }
+
+
+    

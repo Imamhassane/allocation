@@ -9,7 +9,7 @@ if(Session::keyExist("errors")){
 <div class="container wrapper fadeInDown" >
     <div id="formConten">
     <h2 class="active"> Ajouter un Pavillon</h2>
-        <form method="post" action="<?=WEBROOT."pavillon/addPavillon"?>">
+        <form method="post"  action="<?=WEBROOT."pavillon/addPavillon"?>">
         <input type="hidden" name="id"      value="<?=isset($restor[0]->idpavillon)?$restor[0]->idpavillon:'' ?>">        
             <div class="form-group">
                     <input type="text" id="" class="fadeIn second" name="numPavillon" value="<?=isset($restor[0]->idpavillon)?$restor[0]->numpavillon:'' ?>" placeholder="numPavillon">
@@ -24,15 +24,28 @@ if(Session::keyExist("errors")){
                     <?php endif ?>
             </div>
             
+
+
+
+
+
+
+
+
+
             
             <div class="form-group chambre">
-                <label for="">Affecter des chambre +</label>
+                <label for="">Affecter des chambre</label>
                 <?php foreach($chambres as $chambre):?>
                     <span for=""><?=$chambre->numchambre?></span>
                         <input type="checkbox" id="vehicle1" name="chambre[]" value="<?=$chambre->idchambre?>">
                 <?php endforeach ?>
             </div>
-            <p><a onclick="javascript:ShowHide('HiddenDiv')">Créer une chambre</a></p>
+            <p>Créer une chambre ? 
+                <a onclick="javascript:ShowHide('HiddenDiv')">
+                    <input type="checkbox" name="create">
+                </a>
+            </p>
                 <div class="mid" id="HiddenDiv" style="display: none;">
                     <div class="form-group">
                         <input type="text" id="" class="fadeIn second" name="numChambre" placeholder="numChambre" value="<?=isset($restor[0]->idchambre)?$restor[0]->numchambre:'' ?>">
@@ -57,7 +70,7 @@ if(Session::keyExist("errors")){
                             <?php endif ?>
                     </div>
                 </div>
-            <input type="submit" class="fadeIn fourth" value="Se connecter">
+            <input type="submit" class="fadeIn fourth" value="Ajouter">
         </form>
     </div>
 </div>

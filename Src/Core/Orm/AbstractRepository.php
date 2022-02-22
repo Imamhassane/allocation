@@ -17,15 +17,12 @@
         $sql="select * from $this->tableName where $this->primaryKey=?";
          return $this->dataBase->executeSelect($sql,[$id]);
       }
+
       function findBy(string $sql,array $data,$single=false):array|object|bool{
         return $this->dataBase->executeSelect($sql,$data,$single);
       }
    
   
-      function find(int $id):object{
-        $sql="select * from $this->tableName where $this->primaryKey=?";
-         return $this->dataBase->executeSelect($sql,[$id],true);
-      }
 
 
 }

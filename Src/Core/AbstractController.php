@@ -20,6 +20,6 @@ abstract class AbstractController implements ControllerInterface{
     //Url controller/action/parametre1/parametre2
     function  redirect(string $url):void{
         header("location:".WEBROOT."".$url);
-         exit();
+        exit();
     }
 }

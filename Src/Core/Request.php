@@ -3,9 +3,9 @@
   class Request{
   
     private function formatUrl():array{
-         $url=explode('/',$_SERVER['REQUEST_URI']);
-         unset($url[0]);
-          return  array_values($url);
+        $url=explode('/',$_SERVER['REQUEST_URI']);
+        unset($url[0]);
+        return  array_values($url);
     }
    public function getUrl():array|string{
          //controller/action

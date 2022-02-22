@@ -17,7 +17,7 @@
                     <td><?=$pavillon->nbreetage?></td>
                     <td class="detail">
                         <a name="" id="" class="btn1 text-white " 
-                            href="<?= WEBROOT . 'chambre/ajoutChambre' ?>" role="button">Voir+</a>
+                            href="<?= WEBROOT . 'pavillon/getchambrepavillon/'.$pavillon->idpavillon ?>" role="button">Voir+</a>
                     </td>
                     <td>
                         <a href="<?= WEBROOT . 'pavillon/edit/'.$pavillon->idpavillon ?>">

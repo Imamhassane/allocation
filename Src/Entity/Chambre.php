@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use App\Entity\EntityInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Chambre implements EntityInterface{
     private int $idChambre;
@@ -9,8 +10,13 @@ class Chambre implements EntityInterface{
     private int $numEtage;
     private string $typeChambre;
     private string $etat;
+    private string $occupation;
+
     private int|null $idPavillon;
     private Pavillon $pavillon;
+  private Etudiant $etudiants;
+   //  public ArrayCollection $etudiants;
+
     public function __construct()
     {
         
@@ -25,6 +31,16 @@ class Chambre implements EntityInterface{
 
         //array_values((array)$arr) ;
     }
+    public static function  fromArrayup(object $chambres):array{
+        $arr =  array_values((array)$chambres);
+        $arr[]=$arr[1];
+        $arr[]=$arr[0];
+ 
+        unset($arr[0]);
+        unset($arr[1]);
+ 
+        return array_values((array)$arr) ;
+     }
     public static function  fromArrayUpdate(object $chambres):array{
         $arr =  array_values((array)$chambres);
         $arr[]=$arr[1];
@@ -215,6 +231,30 @@ class Chambre implements EntityInterface{
     public function setIdPavillon($idPavillon)
     {
         $this->idPavillon = $idPavillon;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of occupation
+     *
+     * @return  string
+     */
+    public function getOccupation()
+    {
+        return $this->occupation;
+    }
+
+    /**
+     * Set the value of occupation
+     *
+     * @param  string  $occupation
+     *
+     * @return  self
+     */
+    public function setOccupation(string $occupation)
+    {
+        $this->occupation = $occupation;
 
         return $this;
     }

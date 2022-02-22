@@ -25,5 +25,8 @@ class ChambreManager extends AbstractManager{
                     WHERE $this->primaryKey = ? ";
         return $this->dataBase->executeUpdate($sql,$model);
     }
- 
+    public function updateOccupation($model):int{
+        $sql="UPDATE $this->tableName SET `occupation` = ? WHERE $this->primaryKey = ?";
+        return $this->dataBase->executeUpdate($sql,$model);
+    }
 }

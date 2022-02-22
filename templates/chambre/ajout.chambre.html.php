@@ -31,7 +31,7 @@ if(Session::keyExist("errors")){
                     <select class="select" name="typeChambre" id="" >
                         <option value="<?=isset($restor[0]->idchambre)?$restor[0]->typechambre:'select' ?>"><?=isset($restor[0]->idchambre)?$restor[0]->typechambre:'Sélectionner le type de chambre' ?></option>
                         <option value="individuel">individuel</option>
-                        <option value="Duo">à deux</option>
+                        <option value="duo">à deux</option>
                     </select>
                     <?php if(isset($arrErrors['typeChambre'])): ?>
                         <small id="emailHelp"  class="form-text text-danger"><?=$arrErrors['typeChambre']?></small>
@@ -39,7 +39,7 @@ if(Session::keyExist("errors")){
             </div>
             <div class="form-group">
                     <select class="select" name="idPavillon" id="" >
-                        <option value="select">Affecter à un pavilon (facultatif)</option>
+                        <option value="<?=isset($restorPavillons[0]->idpavillon)?$restorPavillons[0]->idpavillon:'Affecter à un pavilon (facultatif)'?>"><?=$restorPavillons[0]->numpavillon?></option>
                         <?php foreach($pavillons as $pavillon):?>
                             <option value="<?=$pavillon->idpavillon?>"><?=$pavillon->numpavillon?></option>
                         <?php endforeach ?>

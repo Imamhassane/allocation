@@ -14,15 +14,13 @@ class DataBase{
     private const   USER_BD = "imamHassane";
     private const   PASSWORD_BD = "alvinniass";
     private const   HOST_BD = "mysql:dbname=gestion_allocation;host=localhost";
+    // private const   USER_BD = "258011_chambre";
+    // private const   PASSWORD_BD = "alvinniass";
+    // private const   HOST_BD = "mysql:dbname=allocationchambre_cours-poo-mvc;host=mysql-allocationchambre.alwaysdata.net";
 
-    // const   WEBROOT = "http://allocationchambre.alwaysdata.net/";
-    // const   USER_DB = "258011_chambre";
-    // const   PASSWORD_DB = "alvinniass";
-    // const   HOST_BD = "mysql-allocationchambre.alwaysdata.net";
-    // const   CHAINE_DE_CONNEXION = 'mysql:dbname=allocationchambre_cours-poo-mvc;host='.self::HOST_BD;
   public function __construct()
   {
-      $this->openConnexion();
+    $this->openConnexion();
   }
     
    private function openConnexion(){
