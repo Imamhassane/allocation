@@ -30,6 +30,7 @@ body:focus{
     margin: 0;
     margin-left: auto;
     margin-right: auto;
+    
     #formContent{
         -webkit-border-radius: 10px 10px 10px 10px;
         border-radius: 10px 10px 10px 10px;
@@ -61,6 +62,10 @@ body:focus{
         @extend #formContent;
         max-width: 90%;
         margin-top: 0;
+        .justify{
+            display: flex;
+            margin: 0;
+        }
         .chambre{
             text-align: left;
             margin-left: 8%;
@@ -72,7 +77,7 @@ body:focus{
         p{
             @extend .chambre;
             cursor: pointer;
-            margin-bottom: 4%;
+            margin-bottom: 2%;
             color: $background;
         }
         span{
@@ -80,7 +85,20 @@ body:focus{
         }
     }
 }
-
+.addEtu{
+    small{
+    text-align: left;
+    margin-left: 4%;
+    font-size: 11px;
+    }
+}
+.addCham{
+    small{
+        text-align: left;
+        margin-left: 10%;
+        font-size: 11px;
+    }
+}
 input[type=button] {
     background-color: $background;
     border: none;
@@ -458,4 +476,10 @@ nav{
 }
 
 
-    
+.form-group.success input{
+    border-color: green;
+}
+
+.form-group.error input{
+    border-color: red;
+}

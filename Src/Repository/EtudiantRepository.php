@@ -4,6 +4,7 @@ use App\Core\Orm\AbstractRepository;
 use \stdClass;
 
 class EtudiantRepository extends PersonneRepository{
+    
     public function __construct()
     {
         parent::__construct();

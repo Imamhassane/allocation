@@ -17,7 +17,6 @@ use App\Repository\EtudiantRepository;
 use App\Repository\PersonneRepository;
 use App\Entity\EtudiantBoursierNonLoge;
 use App\Manager\ChambreManager;
-use Doctrine\Common\Collections\ArrayCollection;
 
 if(Role::isConnected()==true){
     class EtudiantController extends AbstractController{
@@ -25,36 +24,41 @@ if(Role::isConnected()==true){
         public function __construct()
         {
             parent::__construct();
+            $this->cham         =   new ChambreRepository;
+            $this->request      =   new Request ;
+            $this->etudiant     =   new EtudiantRepository;
+            $this->chamRepo     =   new ChambreRepository;
+            $this->main         =   new EtudiantManager;
+            $this->etudiantNB   =   new EtudiantNonBoursier();
+            $this->EtudiantBNL  =   new EtudiantBoursierNonLoge;
+            $this->EtudiantBL   =   new EtudiantBoursierLoge;
+            $this->chamMan      =   new ChambreManager;
+            $this->chambre      =   new chambre;
         }
 
         public  function ajoutEtudiant(){
-            $cham= new ChambreRepository;
-            $chambres = $cham->findChambrePavillonNotNull();
+            $chambres = $this->cham->findChambrePavillonNotNull();
             $this->render("etudiant/ajout.etudiant.html.php",["chambres"=>$chambres]);
         }
 
-        public  function listeEtudiant(Request $request){
-            $url = $request->getUrl();
-            extract($request->request());
-
-            $etudiant=new EtudiantRepository; 
-            $chamRepo= new ChambreRepository;
-            $chambres = $chamRepo->findChambreDispo();
-
+        public  function listeEtudiant(){
+            extract($this->request->request());
+            $url            = $this->request->getUrl();
+            $chambres       = $this->chamRepo->findChambreDispo();
             if(isset($ok)){
-                 $etuloges= $etudiant->findEtudiantByChambre((int)$chambre);
+                $etuloges   =   $this->etudiant->findEtudiantByChambre((int)$chambre);
             }else{                                                            
-                $etuloges= $etudiant->findEtudiantloge();
-               // $etudiants=$etudiant->findPersonneByRole();   
+                $etuloges   =   $this->etudiant->findEtudiantloge();
+                $etudiants  =   $this->etudiant->findPersonneByRole();   
             }
-
+            
             $this->render("etudiant/liste.etudiant.html.php",["chambres"=>$chambres,"etudiants"=>$etudiants,"etuloges"=>$etuloges,"url"=>$url]);
         } 
         
-        public  function addEtudiant(Request $request){
+        public  function addEtudiant(){
             $arrErr=[];
-            if($request->isPost()){
-            extract($request->request());
+            if($this->request->isPost()){
+                extract($this->request->request());
                 $this->validator->isVide($nom,"nom");
                 $this->validator->isVide($prenom,"prenom");
                 $this->validator->logExist($login,"login");
@@ -69,38 +73,31 @@ if(Role::isConnected()==true){
                     $this->validator->validSelect($chambreEtu,"chambreEtu");
                 }
                 if($this->validator->valid()){
-                    $main=new EtudiantManager;
+                    $mat=substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(3/strlen($x)) )),1,3).date_format(date_create(),'Y');
                     if(isset($adresse)){
                         $etu = new EtudiantNonBoursier();
-                        $etu->setNom($nom);
-                        $etu->setPrenom($prenom);
-                        $etu->setLogin($login);
-                        $etu->setAdresse($adresse);
-                            $mat=substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(3/strlen($x)) )),1,3).date_format(date_create(),'Y');
-                        $etu->setMatricule($mat);
-                        $etu->setDateNaissnce($dateNaissance);
-                        $etu->setTelephone($telephone);
-                        $insert=$etu->fromArray($etu);
-                        $main->insert($insert);
+                        $this->etudiantNB->setNom($nom)
+                                         ->setPrenom($prenom)
+                                         ->setLogin($login)
+                                         ->setAdresse($adresse)
+                                         ->setMatricule($mat)
+                                         ->setDateNaissnce($dateNaissance)
+                                         ->setTelephone($telephone);
+                        $insert=$this->etudiantNB->fromArray($this->etudiantNB);
+                        $this->main->insert($insert);
                     }elseif(isset($typebourse) && !isset($chambreEtu)){
-                        $etu = new EtudiantBoursierNonLoge;
-                        $etu->setNom($nom);
-                        $etu->setPrenom($prenom);
-                        $etu->setLogin($login);
-                            $mat=substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(3/strlen($x)) )),1,3).date_format(date_create(),'Y');
-                        $etu->setMatricule($mat);
-                        $etu->setDateNaissnce($dateNaissance);
-                        $etu->setTelephone($telephone);
-                        $etu->setTypeBourse($typebourse);
-                        $insert=$etu->fromArray($etu);
-                        $main->insert($insert);
+                        $this->EtudiantBNL->setNom($nom)
+                                          ->setPrenom($prenom)
+                                          ->setLogin($login)
+                                          ->setMatricule($mat)
+                                          ->setDateNaissnce($dateNaissance)
+                                          ->setTelephone($telephone)
+                                          ->setTypeBourse($typebourse);
+                        $insert=$this->EtudiantBNL->fromArray($this->EtudiantBNL);
+                        $this->main->insert($insert);
                     }elseif(isset($typebourse) && isset($chambreEtu)){
-                        $chamRepo= new ChambreRepository;
-                        $etudiant=new EtudiantRepository; 
-                        $chamMan=new ChambreManager;
-                        $chambre= new chambre;
-                        $etuloges= $etudiant->findEtudiantloge();
-                        $student=$chamRepo->findById($chambreEtu);
+                        $etuloges= $this->etudiant->findEtudiantloge();
+                        $student=$this->cham->findById($chambreEtu);
                         $typeCham=$student[0]->typechambre;
                             foreach($etuloges as $etu){
                                 if($etu->idchambre==$chambreEtu){
@@ -108,28 +105,25 @@ if(Role::isConnected()==true){
                                 }
                             }
                         if ($typeCham=='individuel' || $typeCham=='duo' && $cpt == 1 ) {
-                            $chambre->setOccupation('occupee');
-                            $chambre->setIdChambre($chambreEtu);
-                            $update=$chambre->fromArrayup($chambre);
-                            $chamMan->updateOccupation($update);
-
+                            $this->chambre->setOccupation('occupee')
+                                          ->setIdChambre($chambreEtu);
+                            $update=$this->chambree->fromArrayup($this->chambre);
+                            $this->chamMan->updateOccupation($update);
                         }
-                        $etu = new EtudiantBoursierLoge;
-                        $etu->setNom($nom);
-                        $etu->setPrenom($prenom);
-                        $etu->setLogin($login);
-                            $mat=substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(3/strlen($x)) )),1,3).date_format(date_create(),'Y');
-                        $etu->setMatricule($mat);
-                        $etu->setDateNaissnce($dateNaissance);
-                        $etu->setTelephone($telephone);
-                        $etu->setTypeBourse($typebourse);
+                        $this->EtudiantBL->setNom($nom)
+                                         ->setPrenom($prenom)
+                                         ->setLogin($login)
+                                         ->setMatricule($mat)
+                                         ->setDateNaissnce($dateNaissance)
+                                         ->setTelephone($telephone)
+                                         ->setTypeBourse($typebourse);
                         if($chambreEtu=='select'){
-                            $etu->setIdChambre(null);
+                            $this->EtudiantBL->setIdChambre(null);
                         }else{
-                            $etu->setIdChambre($chambreEtu);
+                            $this->EtudiantBL->setIdChambre($chambreEtu);
                         }
-                        $insert=$etu->fromArray($etu);
-                        $main->insert($insert);
+                        $insert=$this->EtudiantBL->fromArray($this->EtudiantBL);
+                        $this->main->insert($insert);
                     }
                 $this->redirect("etudiant/listeEtudiant");
                 }else{
@@ -141,7 +135,7 @@ if(Role::isConnected()==true){
             } 
         }
     }         
-}else{
+    }else{
     $Notconnected= new SecurityController;
     $Notconnected->redirect("security");
 }

@@ -1,6 +1,19 @@
 <?php 
 if($url[0]=='chambre'):?>
-     <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-4  " href="<?= WEBROOT . 'chambre/addChambre' ?>" role="button">Ajouter +</a>
+     <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/addChambre' ?>" role="button">Ajouter +</a>
+                        <!-- <form method="POST" action="<?=WEBROOT."pavillon/listePavillon"?>" class="form-inline  mt-2 ml-4">
+                            <div class="form-group ml-5">
+                                <div class="form-group">
+                                    <label for="">TPavillon</label>
+                                    <select class="form-control ml-2" name="pavillon" id="" value="">
+                                    <?php foreach ($filtre as $chambre):?>
+                                        <option value="<?=$chambre->numpavillon?>"><?='pavillon '.$chambre->numpavillon?></option>;
+                                    <?php endforeach?>   
+                                    </select>
+                                </div>
+                            </div>
+                            <button name="ok" class="ml-3 ">OK</button>
+                        </form> -->
 <?php endif ?>
     <table class="content-table" id="">
         <thead>

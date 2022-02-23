@@ -9,8 +9,8 @@ if(Session::keyExist("errors")){
 ?>
 <div class="container wrapper fadeInDown addEtu" >
     <div id="formConten">
-    <h2 class="active"> Ajouter un etudiant</h2>
-            <div class="d-flex mt-4">
+<!--     <h2 class="active"> Ajouter un etudiant</h2>
+ -->            <div class="d-flex mt-4">
                 <p>
                     <a id="test" onclick="show('Section1');">
                     Etudiant non boursier ?

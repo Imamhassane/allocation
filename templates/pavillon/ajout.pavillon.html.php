@@ -6,7 +6,7 @@ if(Session::keyExist("errors")){
     Session::removeKey("errors");
 }
 ?>
-<div class="container wrapper fadeInDown" >
+<div class="container wrapper fadeInDown addCham" >
     <div id="formConten">
     <h2 class="active"> Ajouter un Pavillon</h2>
         <form method="post"  action="<?=WEBROOT."pavillon/addPavillon"?>">
@@ -32,20 +32,23 @@ if(Session::keyExist("errors")){
 
 
 
-
             
-            <div class="form-group chambre">
-                <label for="">Affecter des chambre</label>
-                <?php foreach($chambres as $chambre):?>
-                    <span for=""><?=$chambre->numchambre?></span>
-                        <input type="checkbox" id="vehicle1" name="chambre[]" value="<?=$chambre->idchambre?>">
-                <?php endforeach ?>
-            </div>
-            <p>Créer une chambre ? 
-                <a onclick="javascript:ShowHide('HiddenDiv')">
-                    <input type="checkbox" name="create">
-                </a>
-            </p>
+                <div class="justify">
+                    <p>
+                        <a onclick="javascript:ShowHide('Hide')">Affecter des chambre</a>
+                    </p>                
+                    <p>
+                        <a onclick="javascript:ShowHide('HiddenDiv')"> Créer une chambre ? </a>
+                    </p>
+                </div>
+            
+                <div class="mid form-group chambre" id="Hide" style="display: none;">
+                    <?php foreach($chambres as $chambre):?>
+                            <span for=""><?=$chambre->numchambre?></span>
+                            <input type="checkbox" id="vehicle1" name="chambre[]" value="<?=$chambre->idchambre?>">
+                    <?php endforeach ?>
+                </div>
+            
                 <div class="mid" id="HiddenDiv" style="display: none;">
                     <div class="form-group">
                         <input type="text" id="" class="fadeIn second" name="numChambre" placeholder="numChambre" value="<?=isset($restor[0]->idchambre)?$restor[0]->numchambre:'' ?>">
@@ -69,8 +72,8 @@ if(Session::keyExist("errors")){
                                 <small id="emailHelp"  class="form-text text-danger"><?=$arrErrors['typeChambre']?></small>
                             <?php endif ?>
                     </div>
-                </div>
-            <input type="submit" class="fadeIn fourth" value="Ajouter">
+                </div> 
+            <input type="submit" id="input" class="fadeIn fourth" value="Ajouter">
         </form>
     </div>
 </div>

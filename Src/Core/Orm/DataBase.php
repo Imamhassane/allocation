@@ -2,6 +2,7 @@
  namespace App\Core\Orm;
 
 use \PDO;
+use App\Core\Session;
 use stdClass;
 
 class DataBase{
@@ -60,15 +61,25 @@ public function executeSelect(string $sql,array $data=null,$single=false):array|
                       //2-statement->execute([0=>1,1=>"wane"])//[0=>1,1=>"wane"] =>[1,"wane"]
                           //select * from personne where id=1 and nom_complet like wane
 
+                          
     $stm=$this->pdo->prepare($sql);
+    $stl=$this->pdo->prepare($sql);
 
         if(is_null($data)){
            $stm->execute();
-         
+           $stl->execute();
+
         }else{
           $stm->execute($data);
+          $stl->execute($data);
+
             //var_dump($stm);
         }
+
+        $datas['per_page_record'] = per_page_record;
+        $datas['total_records'];
+        Session::setSession("total_records",$stl->rowCount()) ;
+        //var_dump($stm->rowCount());
         return $single?$stm->fetch(\PDO::FETCH_OBJ):$stm->fetchAll(\PDO::FETCH_OBJ);
     }
 

@@ -1,16 +1,18 @@
-                    <form method="POST" action="<?=WEBROOT."etudiant/listeEtudiant"?>" class="form-inline  mt-2 ml-2">
-                        <div class="form-group ml-2">
-                            <div class="form-group">
-                                <label for="">Chambre</label>
-                                <select class="form-control ml-2" name="chambre" id="" value="">
-                                <?php foreach ($chambres as $chambre):?>
-                                    <option value="<?=$chambre->idchambre?>"><?='chambre '.$chambre->numchambre.' pavillon '.$chambre->numpavillon?></option>;
-                                <?php endforeach?>   
-                                </select>
+                    <?php if($url[0]=='etudiant'):?>
+                        <form method="POST" action="<?=WEBROOT."etudiant/listeEtudiant"?>" class="form-inline  mt-2 ml-4">
+                            <div class="form-group ml-5">
+                                <div class="form-group">
+                                    <label for="">Chambre</label>
+                                    <select class="form-control ml-2" name="chambre" id="" value="">
+                                    <?php foreach ($chambres as $chambre):?>
+                                        <option value="<?=$chambre->idchambre?>"><?='chambre '.$chambre->numchambre.' pavillon '.$chambre->numpavillon?></option>;
+                                    <?php endforeach?>   
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <button name="ok" class="ml-3 ">OK</button>
-                    </form>
+                            <button name="ok" class="ml-3 ">OK</button>
+                        </form>
+                    <?php endif ?>               
    <table class="content-table">
         <thead>
             <tr>
@@ -117,3 +119,36 @@
             <?php endforeach?>
         </tbody>
     </table>
+
+
+
+                        <div class="pagination mt-2 mb-5">    
+                            <?php  
+                                if($per_page_record == 0){
+                                    $total_pages = $total_records / 1;     
+
+                                }else{
+                                    $total_pages = $total_records / $per_page_record;     
+
+                                }
+                                $pagLink = "";                                           
+                                if($page>=2){   
+                                    echo "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span></a>";   
+                                }       
+                                        
+                                for ($i=1; $i<=$total_pages; $i++) {   
+                                if ($i == $page) {   
+                                    $pagLink .= "<a class = 'active' href='?controllers=responsable&view=liste.cours.nonplanifie&page="  
+                                                                        .$i."'>".$i." </a>";   
+                                }               
+                                else  {   
+                                    $pagLink .= "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".$i."'>".$i." </a>";     
+                                }   
+                                };     
+                                echo $pagLink;   
+                                if($page<$total_pages){   
+                                    echo "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span></a>";   
+                                }   
+                        
+                            ?>    
+                        </div> 

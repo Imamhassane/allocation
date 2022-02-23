@@ -14,7 +14,7 @@ use App\Manager\PavillonManager;
 use App\Repository\ChambreRepository;
 use App\Repository\PavillonRepository;
 if(Role::isConnected()==true){
-class PavillonController extends AbstractController{
+    class PavillonController extends AbstractController{
         private PavillonRepository $PavRepo; 
         
         public function __construct()
@@ -24,8 +24,14 @@ class PavillonController extends AbstractController{
             $this->chambres=new ChambreRepository;
         }
         public  function listePavillon(){
+            
             $pavillons=$this->PavRepo->findAll();
-            $this->render("pavillon/liste.pavillon.html.php",["pavillons"=>$pavillons]);
+            if(Session::keyExist("total_records")){
+                $arrErrors=Session::getSession("total_records");
+            }
+            
+            //  var_dump($arrErrors);
+           $this->render("pavillon/liste.pavillon.html.php",["pavillons"=>$pavillons]);
         }
         public  function ajoutPavillon(){
             $chambres=$this->chambres->findByPavillonAndEtat();
@@ -45,9 +51,10 @@ class PavillonController extends AbstractController{
         public  function edit(Request $request){
             $id=$request->query();
             $id=$id[0];
-            Session::setSession("idPav", $id);
+            $chambres=$this->chambres->findByPavillonAndEtat();
+           // Session::setSession("idPav", $id);
             $restor=$this->PavRepo->findById($id);
-            $this->render("pavillon/ajout.pavillon.html.php",["restor"=>$restor]);
+            $this->render("pavillon/ajout.pavillon.html.php",["restor"=>$restor,"chambres"=>$chambres]);
         }
          public  function addPavillon(Request $request){
             $arrErr=[];
@@ -67,20 +74,20 @@ class PavillonController extends AbstractController{
                     $main=new PavillonManager();
                     $chambreEntity = new Chambre;
                     $chambreManager=new ChambreManager;
-                    $pavillons->setNumPavillon($numPavillon);
-                    $pavillons->setNbreEtage($nbreEtage);
+                    $pavillons->setNumPavillon($numPavillon)
+                              ->setNbreEtage($nbreEtage);
                     if($id==null){
                         $insert=$pavillons->fromArray($pavillons);
                         $newPavillon=$main->insert($insert);
                         foreach($chambre as $chambres){
                             $myChambre=$this->chambres->findById($chambres);
-                            $chambreEntity->setIdChambre($myChambre[0]->idchambre);
-                            $chambreEntity->setNumChambre($myChambre[0]->numchambre);
-                            $chambreEntity->setNumEtage($myChambre[0]->numetage);
-                            $chambreEntity->setTypeChambre($myChambre[0]->typechambre);
-                            $chambreEntity->setIdPavillon($newPavillon);
-                            $chambreEntity->setEtat($myChambre[0]->etat);
-                            $chamModif=$chambreEntity->fromArrayUpdate($chambreEntity);
+                            $chambreEntity->setIdChambre($myChambre[0]->idchambre)
+                                          ->setNumChambre($myChambre[0]->numchambre)
+                                          ->setNumEtage($myChambre[0]->numetage)
+                                          ->setTypeChambre($myChambre[0]->typechambre)
+                                          ->setIdPavillon($newPavillon)
+                                          ->setEtat($myChambre[0]->etat);
+                            $chamModif = $chambreEntity->fromArrayUpdate($chambreEntity);
                             $chambreManager->update($chamModif);
                         }
                         if(isset($create)){
@@ -111,7 +118,7 @@ class PavillonController extends AbstractController{
         } 
 
     }
-}else{
+    }else{
     $Notconnected= new SecurityController;
     $Notconnected->redirect("security");
 }

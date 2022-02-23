@@ -6,10 +6,8 @@ if(Session::keyExist("errors")){
     Session::removeKey("errors");
 }
 
-//var_dump($test[0]->idpavillon);
-
 ?>
-<div class="container wrapper fadeInDown" >
+<div class="container wrapper fadeInDown addCham" >
     <div id="formConten">
     <h2 class="active"> Ajouter une chambre</h2>
         <form method="post" action="<?=WEBROOT."chambre/ajoutChambre"?>">
@@ -39,7 +37,7 @@ if(Session::keyExist("errors")){
             </div>
             <div class="form-group">
                     <select class="select" name="idPavillon" id="" >
-                        <option value="<?=isset($restorPavillons[0]->idpavillon)?$restorPavillons[0]->idpavillon:'Affecter à un pavilon (facultatif)'?>"><?=$restorPavillons[0]->numpavillon?></option>
+                        <option value="<?=isset($restorPavillons[0]->idpavillon)?$restorPavillons[0]->idpavillon:'select'?>"><?=isset($restorPavillons[0]->idpavillon)?$restorPavillons[0]->numpavillon:'Affecter à un pavilon (facultatif)'?></option>
                         <?php foreach($pavillons as $pavillon):?>
                             <option value="<?=$pavillon->idpavillon?>"><?=$pavillon->numpavillon?></option>
                         <?php endforeach ?>

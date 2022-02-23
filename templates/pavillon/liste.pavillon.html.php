@@ -1,4 +1,4 @@
-<a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-4  " href="<?= WEBROOT . 'pavillon/ajoutPavillon' ?>" role="button">Ajouter +</a>
+<a name="" id="example" class="btn btn-success ml-auto  mb-3 float-right mt-4  " href="<?= WEBROOT . 'pavillon/ajoutPavillon' ?>" role="button">Ajouter +</a>
 
 
     <table class="content-table">
@@ -30,3 +30,9 @@
             <?php endforeach?>
         </tbody>
     </table>
+<script>
+
+$(document).ready(function() {
+  $('#example').DataTable();
+} );
+</script>
