@@ -122,8 +122,9 @@
 
 
 
-                        <div class="pagination mt-2 mb-5">    
+                        <div class="pagination mt-2 mb-5 ml-5">    
                             <?php  
+                            
                                 if($per_page_record == 0){
                                     $total_pages = $total_records / 1;     
 
@@ -131,24 +132,25 @@
                                     $total_pages = $total_records / $per_page_record;     
 
                                 }
+                                //$total_pages = round($total_pages);
                                 $pagLink = "";                                           
-                                if($page>=2){   
-                                    echo "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span></a>";   
+                                if($pages>=2){   
+                                    echo "<a href='".WEBROOT."etudiant/listeEtudiant/page=".($pages-1)."'> <span aria-hidden='true'>&laquo;</span></a>";   
                                 }       
                                         
                                 for ($i=1; $i<=$total_pages; $i++) {   
-                                if ($i == $page) {   
-                                    $pagLink .= "<a class = 'active' href='?controllers=responsable&view=liste.cours.nonplanifie&page="  
+                                if ($i == $pages) {   
+                                    $pagLink .= "<a class = 'active' href='".WEBROOT."etudiant/listeEtudiant/page="  
                                                                         .$i."'>".$i." </a>";   
                                 }               
                                 else  {   
-                                    $pagLink .= "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".$i."'>".$i." </a>";     
+                                    $pagLink .= "<a href='".WEBROOT."etudiant/listeEtudiant/page=".$i."'>".$i." </a>";     
                                 }   
                                 };     
                                 echo $pagLink;   
-                                if($page<$total_pages){   
-                                    echo "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span></a>";   
+                                if($pages<$total_pages){   
+                                    echo "<a href='".WEBROOT."etudiant/listeEtudiant/page=".($pages+1)."'><span aria-hidden='true'>&raquo;</span></a>";   
                                 }   
                         
                             ?>    
-                        </div> 
+                        </div>  

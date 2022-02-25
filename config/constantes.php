@@ -7,6 +7,9 @@
   //Dossier Public
   define("WEBROOT","http://localhost:8000/");
    // define("WEBROOT","http://allocationchambre.alwaysdata.net/");
-   define("per_page_record",5);
+  define("per_page_record",5);
+ define("per_page_record2",2);
+     /**/
+ define("per_page_record3",4); 
 
    

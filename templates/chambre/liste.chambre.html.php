@@ -1,19 +1,8 @@
 <?php 
 if($url[0]=='chambre'):?>
      <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/addChambre' ?>" role="button">Ajouter +</a>
-                        <!-- <form method="POST" action="<?=WEBROOT."pavillon/listePavillon"?>" class="form-inline  mt-2 ml-4">
-                            <div class="form-group ml-5">
-                                <div class="form-group">
-                                    <label for="">TPavillon</label>
-                                    <select class="form-control ml-2" name="pavillon" id="" value="">
-                                    <?php foreach ($filtre as $chambre):?>
-                                        <option value="<?=$chambre->numpavillon?>"><?='pavillon '.$chambre->numpavillon?></option>;
-                                    <?php endforeach?>   
-                                    </select>
-                                </div>
-                            </div>
-                            <button name="ok" class="ml-3 ">OK</button>
-                        </form> -->
+     <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/listeChambre' ?>" role="button">Listes des archivées</a>
+
 <?php endif ?>
     <table class="content-table" id="">
         <thead>
@@ -91,3 +80,38 @@ if($url[0]=='chambre'):?>
             <?php endforeach?>
         </tbody>
     </table>
+
+    <div class="pagination mt-2 mb-5 ml-5">    
+                            <?php  
+                            
+                                if($per_page_record == 0){
+                                    $total_pages = $total_records / 1;     
+
+                                }else{
+                                    $total_pages = $total_records / $per_page_record;     
+
+                                }
+                                //$total_pages = round($total_pages);
+                                //var_dump($total_pages);
+
+                                $pagLink = "";                                           
+                                if($pages>=2){   
+                                    echo "<a href='".WEBROOT."chambre/listeChambre/page=".($pages-1)."'> <span aria-hidden='true'>&laquo;</span></a>";   
+                                }       
+                                        
+                                for ($i=1; $i<=$total_pages; $i++) {   
+                                if ($i == $pages) {   
+                                    $pagLink .= "<a class = 'active' href='".WEBROOT."chambre/listeChambre/page="  
+                                                                        .$i."'>".$i." </a>";   
+                                }               
+                                else  {   
+                                    $pagLink .= "<a href='".WEBROOT."chambre/listeChambre/page=".$i."'>".$i." </a>";     
+                                }   
+                                };     
+                                echo $pagLink;   
+                                if($pages<$total_pages){   
+                                    echo "<a href='".WEBROOT."chambre/listeChambre/page=".($pages+1)."'><span aria-hidden='true'>&raquo;</span></a>";   
+                                }   
+                        
+                            ?>    
+                        </div>  

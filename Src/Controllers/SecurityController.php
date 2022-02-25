@@ -52,9 +52,6 @@ use App\Repository\PersonneRepository;
             $this->redirect("security");
         }
 
-        /* public function showEtudiants(){
-            $users=$this->etuRepo->findAll();
-            $this->render("security/users.html.php",["users"=>$users]);
-        } */
+       
 
     }

@@ -3,9 +3,9 @@
       <i class='bx bx-menu'></i>
       <div class="nav-links">
         <ul class="links">
-          <li><a class="active" href="<?=WEBROOT.'chambre/listeChambre'?>">LISTE DES CHAMBRES</a></li>
-          <li><a href="<?=WEBROOT.'pavillon/listePavillon'?>">LISTE DES PAVILLONS</a></li>
-          <li><a class="active" href="<?=WEBROOT.'etudiant/listeEtudiant'?>">LISTE DES ETUDIANTS</a></li> 
+          <li><a class="active" href="<?=WEBROOT.'chambre/listeChambre/page=1'?>">LISTE DES CHAMBRES</a></li>
+          <li><a href="<?=WEBROOT.'pavillon/listePavillon/page=1'?>">LISTE DES PAVILLONS</a></li>
+          <li><a class="active" href="<?=WEBROOT.'etudiant/listeEtudiant/page=1'?>">LISTE DES ETUDIANTS</a></li> 
           <li><a class="active" href=" <?=WEBROOT.'etudiant/ajoutEtudiant'?>">AJOUTER UN ETUDIANT</a></li> 
 
          

@@ -30,9 +30,37 @@
             <?php endforeach?>
         </tbody>
     </table>
-<script>
 
-$(document).ready(function() {
-  $('#example').DataTable();
-} );
-</script>
+    <div class="pagination mt-2 mb-5 ml-5">    
+                            <?php  
+                            
+                                if($per_page_record == 0){
+                                    $total_pages = $total_records / 1;     
+
+                                }else{
+                                    $total_pages = $total_records / $per_page_record;     
+
+                                }
+                               // $total_pages = round($total_pages);
+                              //  var_dump($total_pages);
+                                $pagLink = "";                                           
+                                if($pages>=2){   
+                                    echo "<a href='".WEBROOT."pavillon/listePavillon/page=".($pages-1)."'> <span aria-hidden='true'>&laquo;</span></a>";   
+                                }       
+                                        
+                                for ($i=1; $i<=$total_pages; $i++) {   
+                                if ($i == $pages) {   
+                                    $pagLink .= "<a class = 'active' href='".WEBROOT."pavillon/listePavillon/page="  
+                                                                        .$i."'>".$i." </a>";   
+                                }               
+                                else  {   
+                                    $pagLink .= "<a href='".WEBROOT."pavillon/listePavillon/page=".$i."'>".$i." </a>";     
+                                }   
+                                };     
+                                echo $pagLink;   
+                                if($pages<$total_pages){   
+                                    echo "<a href='".WEBROOT."pavillon/listePavillon/page=".($pages+1)."'><span aria-hidden='true'>&raquo;</span></a>";   
+                                }   
+                        
+                            ?>    
+                        </div>  

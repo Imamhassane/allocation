@@ -1,37 +1,41 @@
-var divs = ["Section1", "Section2", "Section3"];
-      var visibleId = null;
-      function show(id) {
-        if(visibleId !== id) {
-          visibleId = id;
-        } 
-        hide();
-      }
-      function hide() {
-        var div, i, id;
-        for(i = 0; i < divs.length; i++) {
-          id = divs[i];
-          div = document.getElementById(id);
-          if(visibleId === id) {
-            div.style.display = "block";
-          } else {
-            div.style.display = "none";
-          }
+
+
+      function yesnoCheck(that) {
+        if (that.value == "nonBoursier") {
+            document.getElementById("Section1").style.display = "block";
+      
+        } else {
+            document.getElementById("Section1").style.display = "none";
+      
         }
-      }  
+        if(that.value == "boursierNL"){
+            document.getElementById("Section2").style.display = "block";
+        }else{
+            document.getElementById("Section2").style.display = "none";
+      
+        }
+        
+        if(that.value == "boursierLoge"){
+            document.getElementById("Section3").style.display = "flex";
+        }else{
+            document.getElementById("Section3").style.display = "none";
+      
+        }
 
+        if(that.value == "affect"){
+            document.getElementById("affecter").style.display = "flex";
+        }else{
+            document.getElementById("affecter").style.display = "none";
+        }
 
-      function ShowHide(divId)
-      {
-      if(document.getElementById(divId).style.display == 'none')
-      {
-      document.getElementById(divId).style.display='block';
-      }
-      else
-      {
-      document.getElementById(divId).style.display = 'none';
-      }
-      }
+        if(that.value == "add"){
+            document.getElementById("ajouter").style.display = "flex";
+        }else{
+            document.getElementById("ajouter").style.display = "none";
+        }
 
+      }
+      
 
 
 
@@ -62,20 +66,10 @@ navLinks.style.left = "-100%";
 
 
 // sidebar submenu open close js code
-let htmlcssArrow = document.querySelector(".htmlcss-arrow");
-htmlcssArrow.onclick = function() {
- navLinks.classList.toggle("show1");
-}
-let moreArrow = document.querySelector(".more-arrow");
-moreArrow.onclick = function() {
- navLinks.classList.toggle("show2");
-}
-let jsArrow = document.querySelector(".js-arrow");
-jsArrow.onclick = function() {
- navLinks.classList.toggle("show3");
-}
 
 
 
 
 
+
+    

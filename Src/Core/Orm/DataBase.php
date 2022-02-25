@@ -62,24 +62,35 @@ public function executeSelect(string $sql,array $data=null,$single=false):array|
                           //select * from personne where id=1 and nom_complet like wane
 
                           
+    if(Session::keyExist("sql2")){
+      $sql2=Session::getSession("sql2");
+      $stl=$this->pdo->prepare($sql2);
+
+    }
+
     $stm=$this->pdo->prepare($sql);
-    $stl=$this->pdo->prepare($sql);
 
         if(is_null($data)){
            $stm->execute();
-           $stl->execute();
+           if(Session::keyExist("sql2")){
+              $stl->execute();
+          }
 
         }else{
           $stm->execute($data);
-          $stl->execute($data);
-
-            //var_dump($stm);
+          
+          if(Session::keyExist("sql2")){
+            $stl->execute($data);
+          }
         }
+        
+        if(Session::keyExist("sql2")){
+          Session::setSession("total_records",$stl->rowCount()) ;
 
-        $datas['per_page_record'] = per_page_record;
-        $datas['total_records'];
-        Session::setSession("total_records",$stl->rowCount()) ;
-        //var_dump($stm->rowCount());
+        }
+       // var_dump(Session::getSession("total_records"));
+//        var_dump($stl->rowCount());
+
         return $single?$stm->fetch(\PDO::FETCH_OBJ):$stm->fetchAll(\PDO::FETCH_OBJ);
     }
 
@@ -88,7 +99,6 @@ public function executeSelect(string $sql,array $data=null,$single=false):array|
     if(is_null($data)){
       $stm->execute();
     }else{
-    // var_dump($stm);
         $stm->execute(array_values($data));
     }
     if(!strpos(strtolower($sql),strtolower("insert"))){

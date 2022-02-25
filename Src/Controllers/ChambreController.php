@@ -35,20 +35,32 @@ if(Role::isConnected()==true){
         public  function listeChambre(){
             extract($this->request->request());
             $url=$this->request->getUrl();
-            /* $filtre=$this->ChamRepo->filterChambre();
-            if(isset($ok)){
-                $chambres = $this->ChamRepo->findChambreByChambre($pavillon);
-                $ChambreAndPavillon=$this->ChamRepo->findChambreByChambre($pavillon);
-            } */
+            $get=$this->request->query();
+
+            $pages = $get[0][5];
+            if (isset($pages)){    
+                $page  = $pages; 
+            }    
+            else {    
+                $page=1;    
+            } 
+
             if($url[0]=='chambre'){
-                $chambres=$this->ChamRepo->findChambreByEtat();
-                $ChambreAndPavillon=$this->ChamRepo->FindChambreAndPavillon();
+                $chambres=$this->ChamRepo->findChambreByEtat($page);
+                $ChambreAndPavillon=$this->ChamRepo->FindChambreAndPavillon($page);
             }
-            $this->render("chambre/liste.chambre.html.php",["chambres"=>$chambres,"url"=>$url,"ChambreAndPavillon"=>$ChambreAndPavillon,"filtre"=>$filtre]);    
+
+            $per_page_record    = per_page_record;
+            $total_records      = Session::getSession("total_records");
+
+            
+            $this->render("chambre/liste.chambre.html.php",["chambres"=>$chambres,"url"=>$url,"ChambreAndPavillon"=>$ChambreAndPavillon,"filtre"=>$filtre,"per_page_record"=>$per_page_record,"total_records"=>$total_records,"pages"=>$pages]);   
+            Session::removeKey("sql2");
+ 
         } 
 
         public function addChambre(){
-            $pavillons = $this->pavi->findAll();
+            $pavillons = $this->pavi->getAll();
             $this->render("chambre/ajout.chambre.html.php",["pavillons"=>$pavillons]);
         }
 
@@ -67,19 +79,26 @@ if(Role::isConnected()==true){
             if (!$restor[0]->idpavillon==null) {
                 $restorPavillons=$this->pavi->findById($restor[0]->idpavillon);
             }
-            $pavillons = $this->pavi->findAll();
+            $pavillons = $this->pavi->getAll();
             $this->render("chambre/ajout.chambre.html.php",["restor"=>$restor,"pavillons"=>$pavillons,"restorPavillons"=>$restorPavillons]);
         }
 
         public  function ajoutChambre(){
             if($this->request->isPost()){
                 extract($this->request->request());
+
+                Session::setSession("numChambre",$numChambre);
+                Session::setSession("numEtage",$numEtage);
+                Session::setSession("typeChambre",$typeChambre);
+
+
                 $this->validator->validNum($numChambre,"numChambre");
                 $this->validator->validNum($numEtage,"numEtage");
                 $this->validator->validSelect($typeChambre,"typeChambre");
+                
                 if($this->validator->valid()){
-                    $this->chambres->setNumChambre($numChambre)
-                                    ->setNumEtage($numEtage)
+                    $this->chambres->setNumChambre((int)$numChambre)
+                                    ->setNumEtage((int)$numEtage)
                                     ->setTypeChambre($typeChambre);
                     if($idPavillon=='select'){
                         $this->chambres->setIdPavillon(null);

@@ -19,91 +19,133 @@ if(Role::isConnected()==true){
         
         public function __construct()
         {
-            parent::__construct();
-            $this->PavRepo=new PavillonRepository; 
-            $this->chambres=new ChambreRepository;
+                    parent::__construct();
+                    $this->PavRepo=new PavillonRepository; 
+                    $this->chambres=new ChambreRepository;
+                    $this->request= new Request;
+                    $this->pavillons = new Pavillon();
+                    $this->main=new PavillonManager();
+                    $this->chambreEntity = new Chambre;
+                    $this->chambreManager=new ChambreManager;
         }
         public  function listePavillon(){
-            
-            $pavillons=$this->PavRepo->findAll();
-            if(Session::keyExist("total_records")){
-                $arrErrors=Session::getSession("total_records");
-            }
-            
-            //  var_dump($arrErrors);
-           $this->render("pavillon/liste.pavillon.html.php",["pavillons"=>$pavillons]);
+            $get=$this->request->query();
+
+            $pages = $get[0][5];
+            if (isset($pages)){    
+                $page  = $pages; 
+            }    
+            else {    
+                $page=1;    
+            } 
+            $pavillons=$this->PavRepo->findAll($page);
+
+            $per_page_record    = per_page_record;
+            $total_records      = Session::getSession("total_records");
+
+
+            $this->render("pavillon/liste.pavillon.html.php",["pavillons"=>$pavillons,"per_page_record"=>$per_page_record,"total_records"=>$total_records,"pages"=>$pages]);
+            Session::removeKey("sql2");
+
         }
+
         public  function ajoutPavillon(){
-            $chambres=$this->chambres->findByPavillonAndEtat();
+            $chambres=$this->chambres->getChambreByEtat();
             $this->render("pavillon/ajout.pavillon.html.php",["chambres"=>$chambres]);
         }
-        public function getchambrepavillon(Request $request){
-            $repository = new ChambreRepository;
-            $url = $request->getUrl();
-            $id=$request->query();
+
+        public function getchambrepavillon(){
+            $url = $this->request->getUrl();
+            $id=$this->request->query();
             $id=$id[0];
             if($url[0]=='pavillon'){
-                $chambrepavillon=$repository->findPavillonByChambre($id);
+                $chambrepavillon=$this->chambres->findPavillonByChambre($id);
             }
             $this->render("chambre/liste.chambre.html.php",["chambrepavillon"=>$chambrepavillon,"url"=>$url]);
 
         }
-        public  function edit(Request $request){
-            $id=$request->query();
+
+
+        public  function edit(){
+            $id=$this->request->query();
             $id=$id[0];
-            $chambres=$this->chambres->findByPavillonAndEtat();
-           // Session::setSession("idPav", $id);
+            $chambres=$this->chambres->getChambreByEtat();
             $restor=$this->PavRepo->findById($id);
             $this->render("pavillon/ajout.pavillon.html.php",["restor"=>$restor,"chambres"=>$chambres]);
         }
-         public  function addPavillon(Request $request){
+
+        public  function addPavillon(){
             $arrErr=[];
-            if($request->isPost()){
-            extract($request->request());
-            $this->validator->isVide($numPavillon,"numPavillon");
-            $this->validator->validNum($nbreEtage,"nbreEtage");
-            if(isset($create)){
-                $this->validator->isVide($numChambre,"numChambre");
-                $this->validator->validNum($numEtage,"numEtage");
-                $this->validator->validSelect($typeChambre,"typeChambre");
-                         
-            }
-          //  $this->validator->validSelect($typeChambre,"typeChambre");
+            if($this->request->isPost()){
+              
+                extract($this->request->request());
+                
+                Session::setSession("numPavillon",$numPavillon);
+                Session::setSession("nbreEtage",$nbreEtage);
+
+                $this->validator->isVide($numPavillon,"numPavillon");
+                $this->validator->validNum($nbreEtage,"nbreEtage");
+            
+                if($chooseChambre=='add'){
+                    $this->validator->isVide($numChambre,"numChambre");
+                    $this->validator->validNum($numEtage,"numEtage");
+                    $this->validator->validSelect($typeChambre,"typeChambre");
+                }
                 if($this->validator->valid()){
-                    $pavillons = new Pavillon();
-                    $main=new PavillonManager();
-                    $chambreEntity = new Chambre;
-                    $chambreManager=new ChambreManager;
-                    $pavillons->setNumPavillon($numPavillon)
-                              ->setNbreEtage($nbreEtage);
+                    $this->pavillons->setNumPavillon($numPavillon)
+                                    ->setNbreEtage($nbreEtage);
                     if($id==null){
-                        $insert=$pavillons->fromArray($pavillons);
-                        $newPavillon=$main->insert($insert);
-                        foreach($chambre as $chambres){
-                            $myChambre=$this->chambres->findById($chambres);
-                            $chambreEntity->setIdChambre($myChambre[0]->idchambre)
-                                          ->setNumChambre($myChambre[0]->numchambre)
-                                          ->setNumEtage($myChambre[0]->numetage)
-                                          ->setTypeChambre($myChambre[0]->typechambre)
-                                          ->setIdPavillon($newPavillon)
-                                          ->setEtat($myChambre[0]->etat);
-                            $chamModif = $chambreEntity->fromArrayUpdate($chambreEntity);
-                            $chambreManager->update($chamModif);
+                        $insert=$this->pavillons->fromArray($pavillons);
+                        $newPavillon=$this->main->insert($insert);
+                        if($chooseChambre=='affect'){
+                            foreach($chambre as $chambres){
+                                $myChambre=$this->chambres->findById((int)$chambres);
+                                $this->chambreEntity->setIdChambre($myChambre[0]->idchambre)
+                                                    ->setNumChambre($myChambre[0]->numchambre)
+                                                    ->setNumEtage($myChambre[0]->numetage)
+                                                    ->setTypeChambre($myChambre[0]->typechambre)
+                                                    ->setIdPavillon((int)$newPavillon)
+                                                    ->setEtat($myChambre[0]->etat);
+                                $chamModif = $this->chambreEntity->fromArrayUpdate($this->chambreEntity);
+                                $this->chambreManager->update($chamModif);
+                            }
                         }
-                        if(isset($create)){
-                            $chambreEntity->setNumChambre($numChambre);
-                            $chambreEntity->setNumEtage($numEtage);
-                            $chambreEntity->setTypeChambre($typeChambre);
-                            $chambreEntity->setIdPavillon($newPavillon);
-                            $insert=$chambreEntity->fromArray($chambreEntity);
-                             //var_dump($isert);
-                           $chambreManager->insert($insert);                            
+                        if($chooseChambre=='add'){
+                            $this->chambreEntity->setNumChambre($numChambre)
+                                                ->setNumEtage($numEtage)
+                                                ->setTypeChambre($typeChambre)
+                                                ->setIdPavillon($newPavillon);
+                            $insert=$this->chambreEntity->fromArray($this->chambreEntity);
+                            $this->chambreManager->insert($insert);                            
                         }
                     }else{
-                        $pavillons->setIdPavillon($id);
-                        $insert=$pavillons->fromArrayUpdate($pavillons);
-                        $main->update($insert);
+                        $this->pavillons->setIdPavillon($id);
+                        $insert=$this->pavillons->fromArrayUpdate($pavillons);
+                        $this->main->update($insert);
+                        if($chooseChambre=='affect'){
+                            foreach($chambre as $chambres){
+                                $myChambre=$this->chambres->findById((int)$chambres);
+                                $this->chambreEntity->setIdChambre($myChambre[0]->idchambre)
+                                                    ->setNumChambre($myChambre[0]->numchambre)
+                                                    ->setNumEtage($myChambre[0]->numetage)
+                                                    ->setTypeChambre($myChambre[0]->typechambre)
+                                                    ->setIdPavillon((int)$id)
+                                                    ->setEtat($myChambre[0]->etat);
+                                $chamModif = $this->chambreEntity->fromArrayUpdate($this->chambreEntity);
+                                $this->chambreManager->update($chamModif);
+                            }
+                        }
+                        if($chooseChambre=='add'){
+
+                            $this->chambreEntity->setNumChambre($numChambre)
+                                                ->setNumEtage($numEtage)
+                                                ->setTypeChambre($typeChambre)
+                                                ->setIdPavillon((int)$id);
+                            $insert=$this->chambreEntity->fromArray($this->chambreEntity);
+                            $this->chambreManager->insert($insert);
+                        }
                     }
+                    
                     $this->redirect("pavillon/listePavillon");
                 }else{
                     Session::setSession("errors",$this->validator->getErreurs());
@@ -118,7 +160,7 @@ if(Role::isConnected()==true){
         } 
 
     }
-    }else{
+}else{
     $Notconnected= new SecurityController;
     $Notconnected->redirect("security");
 }

@@ -45,31 +45,50 @@ if(Role::isConnected()==true){
             extract($this->request->request());
             $url            = $this->request->getUrl();
             $chambres       = $this->chamRepo->findChambreDispo();
+            
+            $get=$this->request->query();
+
+            $pages = $get[0][5];
+            if (isset($pages)){    
+                $page  = $pages; 
+            }    
+            else {    
+                $page=1;    
+            } 
+
             if(isset($ok)){
                 $etuloges   =   $this->etudiant->findEtudiantByChambre((int)$chambre);
             }else{                                                            
-                $etuloges   =   $this->etudiant->findEtudiantloge();
-                $etudiants  =   $this->etudiant->findPersonneByRole();   
+                $etuloges   =   $this->etudiant->findEtudiantloge($page);
+                $etudiants  =   $this->etudiant->findPersonneByRole($page);   
             }
-            
-            $this->render("etudiant/liste.etudiant.html.php",["chambres"=>$chambres,"etudiants"=>$etudiants,"etuloges"=>$etuloges,"url"=>$url]);
+            $per_page_record    = per_page_record;
+            $total_records      = Session::getSession("total_records");
+
+            $this->render("etudiant/liste.etudiant.html.php",["chambres"=>$chambres,"etudiants"=>$etudiants,"etuloges"=>$etuloges,"url"=>$url,"per_page_record"=>$per_page_record,"total_records"=>$total_records,"pages"=>$pages]);
+            Session::removeKey("sql2");
+
         } 
         
         public  function addEtudiant(){
             $arrErr=[];
             if($this->request->isPost()){
                 extract($this->request->request());
+                
                 $this->validator->isVide($nom,"nom");
                 $this->validator->isVide($prenom,"prenom");
                 $this->validator->logExist($login,"login");
                 $this->validator->isVide($dateNaissance,"dateNaissance");
                 $this->validator->validNum($telephone,"telephone");
-                if(isset($adresse)){
+                $this->validator->validSelect($typeEtudiant,"typeEtudiant");
+
+                if($typeEtudiant=='nonBoursier'){
                     $this->validator->isVide($adresse,"adresse");
-                }elseif(isset($typebourse)){
+                }elseif($typeEtudiant=='boursierNL'){
                     $this->validator->validSelect($typebourse,"typebourse");
                 }
-                if(isset($chambreEtu)){
+                if($typeEtudiant=='boursierLoge'){
+                    $this->validator->validSelect($typebourse,"typebourse");
                     $this->validator->validSelect($chambreEtu,"chambreEtu");
                 }
                 if($this->validator->valid()){
