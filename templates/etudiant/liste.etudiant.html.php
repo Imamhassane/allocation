@@ -1,3 +1,19 @@
+<?php
+use App\Core\Session;
+$arrErrors=[];
+if(Session::keyExist("message")){
+    $message = Session::getSession("message");
+    if ($message==1) {
+        echo'
+        <div class="container-fluid p-0">
+            <div  id = "message"  class ="alert alert-success text-center text-success">Etudiant créée avec succès</div>
+        </div>';
+    }
+}
+
+Session::removeKey("message");
+
+?>
                     <?php if($url[0]=='etudiant'):?>
                         <form method="POST" action="<?=WEBROOT."etudiant/listeEtudiant"?>" class="form-inline  mt-2 ml-4">
                             <div class="form-group ml-5">
@@ -121,7 +137,7 @@
     </table>
 
 
-
+                    <?php if(!isset($post["ok"])):?>
                         <div class="pagination mt-2 mb-5 ml-5">    
                             <?php  
                             
@@ -151,6 +167,7 @@
                                 if($pages<$total_pages){   
                                     echo "<a href='".WEBROOT."etudiant/listeEtudiant/page=".($pages+1)."'><span aria-hidden='true'>&raquo;</span></a>";   
                                 }   
-                        
+
                             ?>    
                         </div>  
+                    <?php endif ?>

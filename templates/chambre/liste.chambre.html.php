@@ -1,7 +1,7 @@
 <?php 
 if($url[0]=='chambre'):?>
      <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/addChambre' ?>" role="button">Ajouter +</a>
-     <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/listeChambre' ?>" role="button">Listes des archivées</a>
+     <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/ChambreArchivee' ?>" role="button">Listes des archivées</a>
 
 <?php endif ?>
     <table class="content-table" id="">
@@ -13,11 +13,17 @@ if($url[0]=='chambre'):?>
                 <th>Numéro chambre</th>
                 <th>Numéro Etage</th>
                 <th>Type de chambre</th>
-                <?php if($url[0]=='chambre'):?>
+                <?php if($url[1]=='listeChambre'):?>
                     <th>Pavillon</th>
                     <th>Voir les étudiants</th>
                     <th>Modifier</th>
                     <th>Archiver</th>
+                <?php endif ?>
+                <?php if($url[1]=='ChambreArchivee'):?>
+                    <th>Pavillon</th>
+                    <th>Voir les étudiants</th>
+                    <th>Modifier</th>
+                    <th>Desarchiver</th>
                 <?php endif ?>
             </tr>
         </thead>
@@ -32,17 +38,29 @@ if($url[0]=='chambre'):?>
                         <a name="" id="" class="btn1 text-white " 
                             href="<?= WEBROOT . 'chambre/chambreEtudiant/'.$chambre->idchambre ?>" role="button">Voir+</a>
                     </td>
+
                     <td>
                         <a href="<?= WEBROOT . 'chambre/edit/'.$chambre->idchambre ?>">
                             modifier <i class="fa fa-edit"></i>
                         </a>
                     </td>    
-                    <td>
-                        <a href="<?= WEBROOT . 'chambre/archive/'.$chambre->idchambre ?>">
-                        archiver <i class="fa fa-archive"></i>
-                        </a>
-                    </td>
-                  
+
+                    <?php if($url[1]=='listeChambre'):?>
+                        <td>
+                            <a class="archive_button" href="<?= WEBROOT . 'chambre/archive/'.$chambre->idchambre ?>">
+                            archiver <i class="fa fa-archive"></i>
+                            </a>
+                        </td>
+                    <?php endif ?>
+
+                    <?php if($url[1]=='ChambreArchivee'):?>
+                        <td>
+                            <a class="dearchive_button" href="<?= WEBROOT . 'chambre/archive/'.$chambre->idchambre ?>">
+                            Desarchiver <i class="fa fa-archive"></i>
+                            </a>
+                        </td>
+                    <?php endif ?>
+
                 </tr>
             <?php endforeach?>
             <?php foreach ($ChambreAndPavillon as $chambre):?>
@@ -55,17 +73,29 @@ if($url[0]=='chambre'):?>
                         <a name="" id="" class="btn1 text-white " 
                             href="<?= WEBROOT . 'chambre/chambreEtudiant/'.$chambre->idchambre ?>" role="button">Voir+</a>
                     </td>
+
                     <td>
-                        <a href="<?= WEBROOT . 'chambre/edit/'.$chambre->idchambre ?>">
+                        <a  href="<?= WEBROOT . 'chambre/edit/'.$chambre->idchambre ?>">
                             modifier <i class="fa fa-edit"></i>
                         </a>
-                    </td>    
-                    <td>
-                        <a href="<?= WEBROOT . 'chambre/archive/'.$chambre->idchambre ?>">
-                        archiver <i class="fa fa-archive"></i>
-                        </a>
-                    </td>
-                  
+                    </td>   
+
+                    <?php if($url[1]=='listeChambre'):?>
+                        <td>
+                            <a class="archive_button" href="<?= WEBROOT . 'chambre/archive/'.$chambre->idchambre ?>">
+                            archiver <i class="fa fa-archive"></i>
+                            </a>
+                        </td>
+                    <?php endif ?>
+
+                    <?php if($url[1]=='ChambreArchivee'):?>
+                        <td>
+                            <a class="dearchive_button" href="<?= WEBROOT . 'chambre/archive/'.$chambre->idchambre ?>">
+                            Desarchiver <i class="fa fa-archive"></i>
+                            </a>
+                        </td>
+                    <?php endif ?>
+
                 </tr>
             <?php endforeach?>
                   
@@ -91,9 +121,6 @@ if($url[0]=='chambre'):?>
                                     $total_pages = $total_records / $per_page_record;     
 
                                 }
-                                //$total_pages = round($total_pages);
-                                //var_dump($total_pages);
-
                                 $pagLink = "";                                           
                                 if($pages>=2){   
                                     echo "<a href='".WEBROOT."chambre/listeChambre/page=".($pages-1)."'> <span aria-hidden='true'>&laquo;</span></a>";   
@@ -114,4 +141,21 @@ if($url[0]=='chambre'):?>
                                 }   
                         
                             ?>    
-                        </div>  
+                        </div> 
+
+<script>
+    $(document).on('click','.archive_button',function(event){
+    
+    if(!confirm("Voulez vous vraiment archiver cette chambre ?")) {
+       return false;
+    }
+
+});
+    $(document).on('click','.dearchive_button',function(event){
+    
+    if(!confirm("Voulez vous vraiment desarchiver cette chambre?")) {
+       return false;
+    }
+
+});
+</script>

@@ -14,7 +14,7 @@ use App\Repository\ChambreRepository;
 use App\Repository\EtudiantRepository;
 use App\Repository\PavillonRepository;
 
-if(Role::isConnected()==true){
+if(Role::isConnected()){
     class ChambreController extends AbstractController{
          
         public function __construct(){
@@ -50,6 +50,9 @@ if(Role::isConnected()==true){
                 $ChambreAndPavillon=$this->ChamRepo->FindChambreAndPavillon($page);
             }
 
+
+
+
             $per_page_record    = per_page_record;
             $total_records      = Session::getSession("total_records");
 
@@ -58,6 +61,20 @@ if(Role::isConnected()==true){
             Session::removeKey("sql2");
  
         } 
+
+        public  function ChambreArchivee(){
+            $url=$this->request->getUrl();
+
+            if($url[1]=='ChambreArchivee'){
+                $chambres=$this->ChamRepo->getChambreByEtatArchive();
+                $ChambreAndPavillon=$this->ChamRepo->FindChambreAndPavillonArchive();
+            }
+
+            
+            $this->render("chambre/liste.chambre.html.php",["chambres"=>$chambres,"url"=>$url,"ChambreAndPavillon"=>$ChambreAndPavillon]);   
+ 
+        } 
+
 
         public function addChambre(){
             $pavillons = $this->pavi->getAll();
@@ -130,6 +147,7 @@ if(Role::isConnected()==true){
         }
 
         public function archive(){
+            $url = $this->request->getUrl();
             $id     =   $this->request->query();
             $id     =   $id[0];
             $getChambre = $this->ChamRepo->findById($id);
@@ -138,12 +156,20 @@ if(Role::isConnected()==true){
                                ->setNumChambre($getChambre[0]->numchambre)
                                ->setNumEtage($getChambre[0]->numetage)
                                ->setTypeChambre($getChambre[0]->typechambre)
-                               ->setIdPavillon($getChambre[0]->idpavillon)
-                               ->setEtat('archivee');
+                               ->setIdPavillon($getChambre[0]->idpavillon);
+                                if($getChambre[0]->etat=="non-archivee"){
+                                    $this->chambres->setEtat('archivee');
+                                }else{
+                                    $this->chambres->setEtat('non-archivee');
+                                }
                 $chambres=$this->chambres->fromArrayUpdate($this->chambres);
                 $this->main->update($chambres);
             }
-           $this->redirect("chambre/listeChambre");
+            if($getChambre[0]->etat=="non-archivee"){
+                $this->redirect("chambre/listeChambre");
+            }else{
+                $this->redirect("chambre/ChambreArchivee");
+            }
         }
     }         
     }else{

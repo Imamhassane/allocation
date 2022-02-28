@@ -7,18 +7,16 @@ use App\Core\Role;
 use App\Core\Request;
 use App\Core\Session;
 use App\Entity\Chambre;
-use App\Entity\Etudiant;
 use App\Core\AbstractController;
 use App\Manager\EtudiantManager;
 use App\Entity\EtudiantNonBoursier;
 use App\Entity\EtudiantBoursierLoge;
 use App\Repository\ChambreRepository;
 use App\Repository\EtudiantRepository;
-use App\Repository\PersonneRepository;
 use App\Entity\EtudiantBoursierNonLoge;
 use App\Manager\ChambreManager;
 
-if(Role::isConnected()==true){
+if(Role::isConnected()){
     class EtudiantController extends AbstractController{
         
         public function __construct()
@@ -29,7 +27,7 @@ if(Role::isConnected()==true){
             $this->etudiant     =   new EtudiantRepository;
             $this->chamRepo     =   new ChambreRepository;
             $this->main         =   new EtudiantManager;
-            $this->etudiantNB   =   new EtudiantNonBoursier();
+            $this->etudiantNB   =   new EtudiantNonBoursier;
             $this->EtudiantBNL  =   new EtudiantBoursierNonLoge;
             $this->EtudiantBL   =   new EtudiantBoursierLoge;
             $this->chamMan      =   new ChambreManager;
@@ -42,7 +40,8 @@ if(Role::isConnected()==true){
         }
 
         public  function listeEtudiant(){
-            extract($this->request->request());
+            $post=$this->request->request();
+            extract($post);
             $url            = $this->request->getUrl();
             $chambres       = $this->chamRepo->findChambreDispo();
             
@@ -65,7 +64,7 @@ if(Role::isConnected()==true){
             $per_page_record    = per_page_record;
             $total_records      = Session::getSession("total_records");
 
-            $this->render("etudiant/liste.etudiant.html.php",["chambres"=>$chambres,"etudiants"=>$etudiants,"etuloges"=>$etuloges,"url"=>$url,"per_page_record"=>$per_page_record,"total_records"=>$total_records,"pages"=>$pages]);
+            $this->render("etudiant/liste.etudiant.html.php",["chambres"=>$chambres,"etudiants"=>$etudiants,"etuloges"=>$etuloges,"url"=>$url,"per_page_record"=>$per_page_record,"total_records"=>$total_records,"pages"=>$pages,"post"=>$post]);
             Session::removeKey("sql2");
 
         } 
@@ -144,6 +143,7 @@ if(Role::isConnected()==true){
                         $insert=$this->EtudiantBL->fromArray($this->EtudiantBL);
                         $this->main->insert($insert);
                     }
+                Session::setSession("message", 1);
                 $this->redirect("etudiant/listeEtudiant");
                 }else{
                     Session::setSession("errors",$this->validator->getErreurs());

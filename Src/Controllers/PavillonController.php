@@ -13,7 +13,7 @@ use App\Manager\ChambreManager;
 use App\Manager\PavillonManager;
 use App\Repository\ChambreRepository;
 use App\Repository\PavillonRepository;
-if(Role::isConnected()==true){
+if(Role::isConnected()){
     class PavillonController extends AbstractController{
         private PavillonRepository $PavRepo; 
         
@@ -64,7 +64,6 @@ if(Role::isConnected()==true){
             $this->render("chambre/liste.chambre.html.php",["chambrepavillon"=>$chambrepavillon,"url"=>$url]);
 
         }
-
 
         public  function edit(){
             $id=$this->request->query();
@@ -120,7 +119,7 @@ if(Role::isConnected()==true){
                         }
                     }else{
                         $this->pavillons->setIdPavillon($id);
-                        $insert=$this->pavillons->fromArrayUpdate($pavillons);
+                        $insert=$this->pavillons->fromArrayUpdate($this->pavillons);
                         $this->main->update($insert);
                         if($chooseChambre=='affect'){
                             foreach($chambre as $chambres){

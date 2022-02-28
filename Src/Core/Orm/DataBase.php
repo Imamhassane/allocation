@@ -12,12 +12,12 @@ class DataBase{
     //private int|float $x;
 
  
-    private const   USER_BD = "imamHassane";
-    private const   PASSWORD_BD = "alvinniass";
-    private const   HOST_BD = "mysql:dbname=gestion_allocation;host=localhost";
-    // private const   USER_BD = "258011_chambre";
+    // private const   USER_BD = "imamHassane";
     // private const   PASSWORD_BD = "alvinniass";
-    // private const   HOST_BD = "mysql:dbname=allocationchambre_cours-poo-mvc;host=mysql-allocationchambre.alwaysdata.net";
+    // private const   HOST_BD = "mysql:dbname=gestion_allocation;host=localhost";
+    private const   USER_BD = "258011_chambre";
+    private const   PASSWORD_BD = "alvinniass";
+    private const   HOST_BD = "mysql:dbname=allocationchambre_cours-poo-mvc;host=mysql-allocationchambre.alwaysdata.net";
 
   public function __construct()
   {

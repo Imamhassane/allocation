@@ -68,8 +68,7 @@ navLinks.style.left = "-100%";
 // sidebar submenu open close js code
 
 
-
-
-
-
-    
+//Message
+$(document).ready(function(){
+    $("#message").show().fadeIn(3000).css("color","blue")
+});

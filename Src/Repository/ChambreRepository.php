@@ -15,6 +15,7 @@ class ChambreRepository extends AbstractRepository{
         $this->primaryKey="idChambre";
         $this->secondaryKey="idPavillon";
         $this->etat="non-archivee";
+        $this->etat2="archivee";
         $this->tableName1="pavillon";
     }
 
@@ -24,8 +25,26 @@ class ChambreRepository extends AbstractRepository{
         return $this->findBy($sql,[$this->etat],false);
 
     }
-   
+
+    function getChambreByEtatArchive():array{
+
+        $sql="SELECT * from $this->tableName where etat like ? and $this->secondaryKey is null ";
+        return $this->findBy($sql,[$this->etat2],false);
+
+    }
     
+    function FindChambreAndPavillonArchive():array{
+
+        $sql="SELECT * FROM $this->tableName 
+        INNER JOIN $this->tableName1 
+            WHERE $this->tableName.$this->secondaryKey = $this->tableName1.$this->secondaryKey 
+                and $this->tableName.etat like ?";
+
+
+        return $this->findBy($sql,[$this->etat2],false);
+    }
+
+
     function findChambreByEtat($page=null):array{
         $start_from = ($page-1) * per_page_record2;     
 
