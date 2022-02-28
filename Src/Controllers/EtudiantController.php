@@ -56,7 +56,14 @@ if(Role::isConnected()){
             } 
 
             if(isset($ok)){
+               if($chambre=="" && $bourse !=""){
+                $etuloges  =   $this->etudiant->findPersonneByBourse($bourse);
+               }elseif($bourse=="" && $chambre!=""){
                 $etuloges   =   $this->etudiant->findEtudiantByChambre((int)$chambre);
+               }elseif($chambre=="" && $bourse ==""){
+                $etuloges   =   $this->etudiant->findEtudiantloge($page);
+                $etudiants  =   $this->etudiant->findPersonneByRole($page);  
+               }
             }else{                                                            
                 $etuloges   =   $this->etudiant->findEtudiantloge($page);
                 $etudiants  =   $this->etudiant->findPersonneByRole($page);   

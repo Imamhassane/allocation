@@ -20,9 +20,21 @@ Session::removeKey("message");
                                 <div class="form-group">
                                     <label for="">Chambre</label>
                                     <select class="form-control ml-2" name="chambre" id="" value="">
+                                    <option value="">Choisir...</option>
                                     <?php foreach ($chambres as $chambre):?>
                                         <option value="<?=$chambre->idchambre?>"><?='chambre '.$chambre->numchambre.' pavillon '.$chambre->numpavillon?></option>;
                                     <?php endforeach?>   
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group ml-2">
+                                <div class="form-group">
+                                    <label for="">Bourse</label>
+                                    <select class="form-control ml-2" name="bourse" id="" value="">
+                                        <option value="">Choisir...</option>
+                                        <option value="bourse-entiere">Bourse entière</option>
+                                        <option value="demi-bourse">Demi bourse</option>
+
                                     </select>
                                 </div>
                             </div>
@@ -114,6 +126,7 @@ Session::removeKey("message");
                     </td>
                 </tr>
             <?php endforeach?>
+        <?php if($url[0]=='chambreEtudiant'):?>
             <?php foreach ($getEtudiant as $etudiant):?>
                 <tr>
                     <td><?=$etudiant->prenom?></td>
@@ -133,6 +146,7 @@ Session::removeKey("message");
                 </tr>
 
             <?php endforeach?>
+        <?php endif ?>
         </tbody>
     </table>
 

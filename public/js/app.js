@@ -1,5 +1,3 @@
-
-
       function yesnoCheck(that) {
         if (that.value == "nonBoursier") {
             document.getElementById("Section1").style.display = "block";

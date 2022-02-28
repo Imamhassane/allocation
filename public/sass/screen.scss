@@ -128,7 +128,8 @@ input[type=reset]{
 .btn1 {
     @extend input[type=button];
     margin: 0;
-    padding: 10px 30px;
+    padding: 7px 18px;
+    font-size: 12px
 }
 .btn-success,.float-righ{
     @extend input[type=button];
@@ -418,10 +419,17 @@ nav{
     margin-right: auto;
     margin-left: auto;
     text-align: center;
+    .archi{
+        a:hover{
+            
+                color: red;
+            
+        }
+    }
     td {
         padding: 18px 20px;
         text-align: center;
-
+        
         a{
             text-decoration: none;
             color: #000;

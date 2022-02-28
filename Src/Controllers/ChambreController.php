@@ -33,10 +33,12 @@ if(Role::isConnected()){
 
         
         public  function listeChambre(){
-            extract($this->request->request());
+            
+            $post=$this->request->request();
+            extract($post);
             $url=$this->request->getUrl();
             $get=$this->request->query();
-
+            $pavillons=$this->pavi->getAll();
             $pages = $get[0][5];
             if (isset($pages)){    
                 $page  = $pages; 
@@ -44,8 +46,9 @@ if(Role::isConnected()){
             else {    
                 $page=1;    
             } 
-
-            if($url[0]=='chambre'){
+            if(isset($ok) && $chambre != ''){
+                $ChambreAndPavillon= $this->ChamRepo->findPavillonByChambre($chambre);
+            }elseif($url[0]=='chambre'){
                 $chambres=$this->ChamRepo->findChambreByEtat($page);
                 $ChambreAndPavillon=$this->ChamRepo->FindChambreAndPavillon($page);
             }
@@ -57,7 +60,7 @@ if(Role::isConnected()){
             $total_records      = Session::getSession("total_records");
 
             
-            $this->render("chambre/liste.chambre.html.php",["chambres"=>$chambres,"url"=>$url,"ChambreAndPavillon"=>$ChambreAndPavillon,"filtre"=>$filtre,"per_page_record"=>$per_page_record,"total_records"=>$total_records,"pages"=>$pages]);   
+            $this->render("chambre/liste.chambre.html.php",["chambres"=>$chambres,"url"=>$url,"ChambreAndPavillon"=>$ChambreAndPavillon,"filtre"=>$filtre,"per_page_record"=>$per_page_record,"total_records"=>$total_records,"pages"=>$pages,"pavillons"=>$pavillons,"post"=>$post]);   
             Session::removeKey("sql2");
  
         } 

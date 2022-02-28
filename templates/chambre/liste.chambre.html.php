@@ -1,9 +1,23 @@
-<?php 
-if($url[0]=='chambre'):?>
+<?php if($url[1]=='listeChambre'):?>
      <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/addChambre' ?>" role="button">Ajouter +</a>
      <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/ChambreArchivee' ?>" role="button">Listes des archivées</a>
-
+     <form method="POST" action="<?=WEBROOT."chambre/listeChambre"?>" class="form-inline  mt-2 ml-4">
+                            <div class="form-group ml-5">
+                                <div class="form-group">
+                                    <label for="">Pavillon</label>
+                                    <select class="form-control ml-2" name="chambre" id="" value="">
+                                    <?php foreach ($pavillons  as $pavillon):?>
+                                        <option value="<?=$pavillon->idpavillon?>"><?=' pavillon '.$pavillon->numpavillon?></option>;
+                                    <?php endforeach?>   
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <button name="ok" class="ml-3 ">OK</button>
+                        </form>
 <?php endif ?>
+
+
     <table class="content-table" id="">
         <thead>
             <tr class="tittle">
@@ -46,7 +60,7 @@ if($url[0]=='chambre'):?>
                     </td>    
 
                     <?php if($url[1]=='listeChambre'):?>
-                        <td>
+                        <td class="archi">
                             <a class="archive_button" href="<?= WEBROOT . 'chambre/archive/'.$chambre->idchambre ?>">
                             archiver <i class="fa fa-archive"></i>
                             </a>
@@ -54,7 +68,7 @@ if($url[0]=='chambre'):?>
                     <?php endif ?>
 
                     <?php if($url[1]=='ChambreArchivee'):?>
-                        <td>
+                        <td class="archi">
                             <a class="dearchive_button" href="<?= WEBROOT . 'chambre/archive/'.$chambre->idchambre ?>">
                             Desarchiver <i class="fa fa-archive"></i>
                             </a>
@@ -81,7 +95,7 @@ if($url[0]=='chambre'):?>
                     </td>   
 
                     <?php if($url[1]=='listeChambre'):?>
-                        <td>
+                        <td class="archi">
                             <a class="archive_button" href="<?= WEBROOT . 'chambre/archive/'.$chambre->idchambre ?>">
                             archiver <i class="fa fa-archive"></i>
                             </a>
@@ -89,7 +103,7 @@ if($url[0]=='chambre'):?>
                     <?php endif ?>
 
                     <?php if($url[1]=='ChambreArchivee'):?>
-                        <td>
+                        <td class="archi">
                             <a class="dearchive_button" href="<?= WEBROOT . 'chambre/archive/'.$chambre->idchambre ?>">
                             Desarchiver <i class="fa fa-archive"></i>
                             </a>
@@ -98,7 +112,7 @@ if($url[0]=='chambre'):?>
 
                 </tr>
             <?php endforeach?>
-                  
+        <?php if($url[1]=='getchambrepavillon'):?>
             <?php foreach ($chambrepavillon as $chambre):?>
                 <tr>
                     <td><?=$chambre->numchambre?></td>
@@ -108,10 +122,11 @@ if($url[0]=='chambre'):?>
                 </tr>
 
             <?php endforeach?>
+        <?php endif ?>
         </tbody>
     </table>
-
-    <div class="pagination mt-2 mb-5 ml-5">    
+                    <?php if(!isset($post["ok"])):?>
+                        <div class="pagination mt-2 mb-5 ml-5">    
                             <?php  
                             
                                 if($per_page_record == 0){
@@ -142,6 +157,7 @@ if($url[0]=='chambre'):?>
                         
                             ?>    
                         </div> 
+                    <?php endif ?>
 
 <script>
     $(document).on('click','.archive_button',function(event){
@@ -150,12 +166,12 @@ if($url[0]=='chambre'):?>
        return false;
     }
 
-});
-    $(document).on('click','.dearchive_button',function(event){
-    
-    if(!confirm("Voulez vous vraiment desarchiver cette chambre?")) {
-       return false;
-    }
+    });
+        $(document).on('click','.dearchive_button',function(event){
+        
+        if(!confirm("Voulez vous vraiment desarchiver cette chambre?")) {
+        return false;
+        }
 
-});
+    });
 </script>
