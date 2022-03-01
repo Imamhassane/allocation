@@ -1,7 +1,7 @@
 <?php if($url[1]=='listeChambre'):?>
      <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/addChambre' ?>" role="button">Ajouter +</a>
      <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/ChambreArchivee' ?>" role="button">Listes des archivées</a>
-     <form method="POST" action="<?=WEBROOT."chambre/listeChambre"?>" class="form-inline  mt-2 ml-4">
+     <form method="POST" action="<?=WEBROOT."chambre/listeChambre"?>" class="form-inline  mt-2 ml-4 remakeSelct">
                             <div class="form-group ml-5">
                                 <div class="form-group">
                                     <label for="">Pavillon</label>

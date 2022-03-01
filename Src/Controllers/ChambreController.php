@@ -60,7 +60,7 @@ if(Role::isConnected()){
             $total_records      = Session::getSession("total_records");
 
             
-            $this->render("chambre/liste.chambre.html.php",["chambres"=>$chambres,"url"=>$url,"ChambreAndPavillon"=>$ChambreAndPavillon,"filtre"=>$filtre,"per_page_record"=>$per_page_record,"total_records"=>$total_records,"pages"=>$pages,"pavillons"=>$pavillons,"post"=>$post]);   
+            $this->render("chambre/liste.chambre.html.php",["chambres"=>$chambres,"url"=>$url,"ChambreAndPavillon"=>$ChambreAndPavillon,"per_page_record"=>$per_page_record,"total_records"=>$total_records,"pages"=>$pages,"pavillons"=>$pavillons,"post"=>$post]);   
             Session::removeKey("sql2");
  
         } 

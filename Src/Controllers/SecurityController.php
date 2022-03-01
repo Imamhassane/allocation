@@ -11,12 +11,10 @@ use App\Repository\PersonneRepository;
 
         private PersonneRepository $persRepo;
 
-        // private EtudiantRepository $etuRepo;
         public function __construct()
         {
             parent::__construct();
             $this->persRepo=new PersonneRepository;
-            //   $this->etuRepo=new EtudiantRepository;
         }
         public function login(){
             $this->layout="layout.connexion";

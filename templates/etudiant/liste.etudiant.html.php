@@ -15,7 +15,7 @@ Session::removeKey("message");
 
 ?>
                     <?php if($url[0]=='etudiant'):?>
-                        <form method="POST" action="<?=WEBROOT."etudiant/listeEtudiant"?>" class="form-inline  mt-2 ml-4">
+                        <form method="POST" action="<?=WEBROOT."etudiant/listeEtudiant"?>" class="form-inline  mt-2 ml-4 remakeSelct">
                             <div class="form-group ml-5">
                                 <div class="form-group">
                                     <label for="">Chambre</label>

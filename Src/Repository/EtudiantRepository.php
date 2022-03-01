@@ -59,6 +59,5 @@ class EtudiantRepository extends PersonneRepository{
         $sql="SELECT * from $this->tableName where typeBourse like ? ";
         return $this->findBy($sql,[$bourse],false);
     }
- //   $sql="SELECT * FROM chambre JOIN user join pavillon WHERE role like ? ";
 
 }
