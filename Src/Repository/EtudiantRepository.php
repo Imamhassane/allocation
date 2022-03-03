@@ -42,7 +42,15 @@ class EtudiantRepository extends PersonneRepository{
         return $this->dataBase->executeSelect($sql);
     }
 
+    function findEtudiantloge1():array{
 
+        $sql="SELECT * FROM $this->tableName u 
+                INNER JOIN chambre c on u.idChambre = c.idChambre 
+                    INNER JOIN pavillon p on c.idPavillon = p.idPavillon";
+       
+
+        return $this->dataBase->executeSelect($sql);
+    }
 
 
 

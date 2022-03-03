@@ -33,6 +33,15 @@ if(Session::keyExist("errors")){
                                                                                                                                         } ?>">
                             <small id="emailHelp"  class="form-text text-danger"><?=isset($arrErrors['nbreEtage'])?$arrErrors['nbreEtage']:''?></small>
                 </div> 
+            <?php if(isset($restor[0]->idpavillon)):?>
+                <div class=" form-group chambre"  id="" >
+                    chambres : 
+                    <?php foreach($arrayChambre as $chambre):?>
+                            <span for=""><?=$chambre->numchambre?></span>
+                            <input type="checkbox" id="vehicle1" name="chambre[]" value="<?=$chambre->idchambre?>" checked>
+                    <?php endforeach ?>
+                </div>
+            <?php endif ?>
                     <div class="form-group">
                         <select class="select" name="chooseChambre" id="" onchange="yesnoCheck(this);">
                             <option value="select">Affecter ou Ajouter des chambres</option>
@@ -144,8 +153,7 @@ if(Session::keyExist("errors")){
     });
     return bool;
     }
-    //
-
+   
     //
     function checkLength(input, min, max) {//Tester la longueur de la valeur  d'un input
         if(input.value.length < min){

@@ -22,7 +22,7 @@ if(Role::isConnected()){
                     parent::__construct();
                     $this->PavRepo=new PavillonRepository; 
                     $this->chambres=new ChambreRepository;
-                    $this->request= new Request;
+                    $this->request = new Request;
                     $this->pavillons = new Pavillon();
                     $this->main=new PavillonManager();
                     $this->chambreEntity = new Chambre;
@@ -66,15 +66,25 @@ if(Role::isConnected()){
         }
 
         public  function edit(){
+            Session::setSession("url",$this->request->getUrl());
             $id=$this->request->query();
             $id=$id[0];
             $chambres=$this->chambres->getChambreByEtat();
+            $chambreByPabillon = $this->chambres->getAll();
+            foreach($chambreByPabillon as $chambrePav){
+                if($chambrePav->idpavillon == $id){
+                    $arrayChambre[]= $chambrePav;
+                }
+            }
             $restor=$this->PavRepo->findById($id);
-            $this->render("pavillon/ajout.pavillon.html.php",["restor"=>$restor,"chambres"=>$chambres]);
+            $this->render("pavillon/ajout.pavillon.html.php",["restor"=>$restor,"chambres"=>$chambres,"arrayChambre"=>$arrayChambre]);
         }
 
         public  function addPavillon(){
             $arrErr=[];
+            if(Session::keyExist("url")){
+                $url=Session::getSession("url");
+            }
             if($this->request->isPost()){
               
                 extract($this->request->request());
@@ -121,7 +131,7 @@ if(Role::isConnected()){
                         $this->pavillons->setIdPavillon($id);
                         $insert=$this->pavillons->fromArrayUpdate($this->pavillons);
                         $this->main->update($insert);
-                        if($chooseChambre=='affect'){
+                        if($chooseChambre=='affect' ){
                             foreach($chambre as $chambres){
                                 $myChambre=$this->chambres->findById((int)$chambres);
                                 $this->chambreEntity->setIdChambre($myChambre[0]->idchambre)
@@ -133,6 +143,32 @@ if(Role::isConnected()){
                                 $chamModif = $this->chambreEntity->fromArrayUpdate($this->chambreEntity);
                                 $this->chambreManager->update($chamModif);
                             }
+                        }
+                        if($url[1]=='edit'){
+                            $pavillonKey=$this->chambres->findPavillonByChambre($id);
+                            foreach($pavillonKey as $key){
+                                $myChambre=$this->chambres->findById($key->idchambre);
+                                $this->chambreEntity->setIdChambre($myChambre[0]->idchambre)
+                                                   ->setNumChambre($myChambre[0]->numchambre)
+                                                   ->setNumEtage($myChambre[0]->numetage)
+                                                   ->setTypeChambre($myChambre[0]->typechambre)
+                                                   ->setIdPavillon(null)
+                                                   ->setEtat($myChambre[0]->etat);
+                              $chamModif = $this->chambreEntity->fromArrayUpdate($this->chambreEntity);
+                              $this->chambreManager->update($chamModif);
+                            }
+                            foreach($chambre as $chambres){  
+                                $myChambre=$this->chambres->findById((int)$chambres);
+                                 $this->chambreEntity->setIdChambre($myChambre[0]->idchambre)
+                                                    ->setNumChambre($myChambre[0]->numchambre)
+                                                    ->setNumEtage($myChambre[0]->numetage)
+                                                    ->setTypeChambre($myChambre[0]->typechambre)
+                                                    ->setIdPavillon((int)$id)
+                                                    ->setEtat($myChambre[0]->etat);
+                                $chamModif = $this->chambreEntity->fromArrayUpdate($this->chambreEntity);
+                                $this->chambreManager->update($chamModif);
+
+                            }                                
                         }
                         if($chooseChambre=='add'){
 
@@ -146,6 +182,8 @@ if(Role::isConnected()){
                     }
                     
                     $this->redirect("pavillon/listePavillon");
+                    Session::removeKey("errors");
+
                 }else{
                     Session::setSession("errors",$this->validator->getErreurs());
                     if((int)$id != 0){

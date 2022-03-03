@@ -101,8 +101,14 @@ class ChambreRepository extends AbstractRepository{
     }
 
 
-    function findPavillonByChambre(int $id):array|object{
+    /* function findPavillonByChambre(int $id):array|object{
         $sql="select * from $this->tableName where $this->secondaryKey=?";
+        return $this->findBy($sql,[$id],false);
+    } */
+    function findPavillonByChambre(int $id):array|object{
+        $sql="SELECT * FROM $this->tableName 
+                INNER JOIN $this->tableName1 
+                    WHERE $this->tableName.$this->secondaryKey = $this->tableName1.$this->secondaryKey and $this->tableName.$this->secondaryKey = ? ";
         return $this->findBy($sql,[$id],false);
     }
 

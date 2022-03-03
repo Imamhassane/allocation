@@ -80,17 +80,17 @@ if(Role::isConnected()){
             $arrErr=[];
             if($this->request->isPost()){
                 extract($this->request->request());
-                
                 $this->validator->isVide($nom,"nom");
                 $this->validator->isVide($prenom,"prenom");
                 $this->validator->logExist($login,"login");
                 $this->validator->isVide($dateNaissance,"dateNaissance");
                 $this->validator->validNum($telephone,"telephone");
                 $this->validator->validSelect($typeEtudiant,"typeEtudiant");
-
+                //var_dump($typeEtudiant);die;
                 if($typeEtudiant=='nonBoursier'){
                     $this->validator->isVide($adresse,"adresse");
-                }elseif($typeEtudiant=='boursierNL'){
+                }
+                if($typeEtudiant=='boursierNL'){
                     $this->validator->validSelect($typebourse,"typebourse");
                 }
                 if($typeEtudiant=='boursierLoge'){
@@ -99,7 +99,7 @@ if(Role::isConnected()){
                 }
                 if($this->validator->valid()){
                     $mat=substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(3/strlen($x)) )),1,3).date_format(date_create(),'Y');
-                    if(isset($adresse)){
+                    if($adresse !=''){
                         $etu = new EtudiantNonBoursier();
                         $this->etudiantNB->setNom($nom)
                                          ->setPrenom($prenom)
@@ -110,7 +110,7 @@ if(Role::isConnected()){
                                          ->setTelephone($telephone);
                         $insert=$this->etudiantNB->fromArray($this->etudiantNB);
                         $this->main->insert($insert);
-                    }elseif(isset($typebourse) && !isset($chambreEtu)){
+                    }elseif($typebourse !='' && $chambreEtu =='select' && $adresse =='' ){
                         $this->EtudiantBNL->setNom($nom)
                                           ->setPrenom($prenom)
                                           ->setLogin($login)
@@ -120,8 +120,8 @@ if(Role::isConnected()){
                                           ->setTypeBourse($typebourse);
                         $insert=$this->EtudiantBNL->fromArray($this->EtudiantBNL);
                         $this->main->insert($insert);
-                    }elseif(isset($typebourse) && isset($chambreEtu)){
-                        $etuloges= $this->etudiant->findEtudiantloge();
+                    }elseif($type !='' && $chambreEtu !='' && $adresse ==''){
+                        $etuloges= $this->etudiant->findEtudiantloge1();
                         $student=$this->cham->findById($chambreEtu);
                         $typeCham=$student[0]->typechambre;
                             foreach($etuloges as $etu){
@@ -132,7 +132,7 @@ if(Role::isConnected()){
                         if ($typeCham=='individuel' || $typeCham=='duo' && $cpt == 1 ) {
                             $this->chambre->setOccupation('occupee')
                                           ->setIdChambre($chambreEtu);
-                            $update=$this->chambree->fromArrayup($this->chambre);
+                            $update=$this->chambre->fromArrayup($this->chambre);
                             $this->chamMan->updateOccupation($update);
                         }
                         $this->EtudiantBL->setNom($nom)
@@ -141,7 +141,7 @@ if(Role::isConnected()){
                                          ->setMatricule($mat)
                                          ->setDateNaissnce($dateNaissance)
                                          ->setTelephone($telephone)
-                                         ->setTypeBourse($typebourse);
+                                         ->setTypeBourse($type);
                         if($chambreEtu=='select'){
                             $this->EtudiantBL->setIdChambre(null);
                         }else{
@@ -150,6 +150,7 @@ if(Role::isConnected()){
                         $insert=$this->EtudiantBL->fromArray($this->EtudiantBL);
                         $this->main->insert($insert);
                     }
+                    
                 Session::setSession("message", 1);
                 $this->redirect("etudiant/listeEtudiant");
                 }else{

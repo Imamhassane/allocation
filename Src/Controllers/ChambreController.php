@@ -28,10 +28,7 @@ if(Role::isConnected()){
                 $this->pavillon= new Pavillon;
 
         }
-
-            
-
-        
+  
         public  function listeChambre(){
             
             $post=$this->request->request();
@@ -77,7 +74,6 @@ if(Role::isConnected()){
             $this->render("chambre/liste.chambre.html.php",["chambres"=>$chambres,"url"=>$url,"ChambreAndPavillon"=>$ChambreAndPavillon]);   
  
         } 
-
 
         public function addChambre(){
             $pavillons = $this->pavi->getAll();
@@ -175,7 +171,7 @@ if(Role::isConnected()){
             }
         }
     }         
-    }else{
+}else{
     $Notconnected= new SecurityController;
     $Notconnected->redirect("security");
 }

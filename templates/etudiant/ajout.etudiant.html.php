@@ -44,7 +44,7 @@ if(Session::keyExist("errors")){
                             <option value="select">Sélectionner le type d'étudiant</option>
                             <option value="nonBoursier">Etudiant non boursier </option>
                             <option value="boursierNL">Etudiant boursier non Logé</option>
-                            <option value="boursierLoge">tudiant boursier logé </option>
+                            <option value="boursierLoge">Etudiant boursier logé </option>
                         </select>
                             <small id="emailHelp"  class="form-text text-danger"><?=isset($arrErrors['typeEtudiant'])?$arrErrors['typeEtudiant']:''?></small>
                     </div>
@@ -69,7 +69,7 @@ if(Session::keyExist("errors")){
             </div>
             <div class="row" id ="Section3" style="display: none;" >
                     <div class="form-group">
-                        <select class="select" name="typebourse" id="" >
+                        <select class="select" name="type" id="" >
                             <option value="select">Sélectionner le type de bourse</option>
                             <option value="demi-bourse">Demi-bourse</option>
                             <option value="bourse-entiere">Bourse entière </option>
@@ -95,6 +95,31 @@ if(Session::keyExist("errors")){
 </div>
 
 <script>
+    function yesnoCheck(that) {
+    if (that.value == "nonBoursier") {
+        document.getElementById("Section1").style.display = "block";
+  
+    } else {
+        document.getElementById("Section1").style.display = "none";
+  
+    }
+    if(that.value == "boursierNL"){
+        document.getElementById("Section2").style.display = "block";
+    }else{
+        document.getElementById("Section2").style.display = "none";
+  
+    }
+    
+    if(that.value == "boursierLoge"){
+        document.getElementById("Section3").style.display = "flex";
+    }else{
+        document.getElementById("Section3").style.display = "none";
+  
+    }
+
+   
+
+    }
     const form = document.getElementById('form');
     const nom = document.getElementById('nom');
     const prenom = document.getElementById('prenom');
