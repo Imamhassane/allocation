@@ -104,7 +104,7 @@ if(Role::isConnected()){
                     $this->pavillons->setNumPavillon($numPavillon)
                                     ->setNbreEtage($nbreEtage);
                     if($id==null){
-                        $insert=$this->pavillons->fromArray($pavillons);
+                        $insert=$this->pavillons->fromArray($this->pavillons);
                         $newPavillon=$this->main->insert($insert);
                         if($chooseChambre=='affect'){
                             foreach($chambre as $chambres){
@@ -180,7 +180,7 @@ if(Role::isConnected()){
                             $this->chambreManager->insert($insert);
                         }
                     }
-                    
+                    Session::setSession("message", 1);
                     $this->redirect("pavillon/listePavillon");
                     Session::removeKey("errors");
 

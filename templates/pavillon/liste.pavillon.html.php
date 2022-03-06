@@ -1,6 +1,22 @@
-<a name="" id="example" class="btn btn-success ml-auto  mb-3 float-right mt-4  " href="<?= WEBROOT . 'pavillon/ajoutPavillon' ?>" role="button">Ajouter +</a>
+<?php
+use App\Core\Session;
+if(Session::keyExist("message")){
+    $message = Session::getSession("message");
+    if ($message==1) {
+        echo'
+        <div class="container-fluid p-0">
+            <div  id = "message"  class ="alert alert-success text-center text-success">Pavillon ajouter avec succes</div>
+        </div>';
+    }
+}
 
+Session::removeKey("message");
 
+?>
+<div class="int">
+    <a name="" id="example" class="btn btn-success ml-auto  mb-3 float-right mt-4  " href="<?= WEBROOT . 'pavillon/ajoutPavillon' ?>" role="button">Ajouter +</a>
+</div>
+<div class="overflow">
     <table class="content-table">
         <thead>
             <tr>
@@ -30,8 +46,8 @@
             <?php endforeach?>
         </tbody>
     </table>
-
-    <div class="pagination mt-2 mb-5 ml-5">    
+</div>
+    <div class="pagination mt-2 mb-5 ">    
                             <?php  
                             
                                 if($per_page_record == 0){

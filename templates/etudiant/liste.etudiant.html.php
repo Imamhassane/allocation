@@ -1,12 +1,11 @@
 <?php
 use App\Core\Session;
-$arrErrors=[];
 if(Session::keyExist("message")){
     $message = Session::getSession("message");
     if ($message==1) {
         echo'
         <div class="container-fluid p-0">
-            <div  id = "message"  class ="alert alert-success text-center text-success">Etudiant créée avec succès</div>
+            <div  id = "message"  class ="alert alert-success text-center text-success">Etudiant ajouter avec succes</div>
         </div>';
     }
 }
@@ -17,7 +16,7 @@ Session::removeKey("message");
                     <?php if($url[0]=='etudiant'):?>
                         <form method="POST" action="<?=WEBROOT."etudiant/listeEtudiant"?>" class="form-inline  mt-2 ml-4 remakeSelct">
                             <div class="form-group ml-5">
-                                <div class="form-group">
+                                
                                     <label for="">Chambre</label>
                                     <select class="form-control ml-2" name="chambre" id="" value="">
                                     <option value="">Choisir...</option>
@@ -25,10 +24,9 @@ Session::removeKey("message");
                                         <option value="<?=$chambre->idchambre?>"><?='chambre '.$chambre->numchambre.' pavillon '.$chambre->numpavillon?></option>;
                                     <?php endforeach?>   
                                     </select>
-                                </div>
-                            </div>
-                            <div class="form-group ml-2">
-                                <div class="form-group">
+                               
+                            
+                                
                                     <label for="">Bourse</label>
                                     <select class="form-control ml-2" name="bourse" id="" value="">
                                         <option value="">Choisir...</option>
@@ -36,11 +34,12 @@ Session::removeKey("message");
                                         <option value="demi-bourse">Demi bourse</option>
 
                                     </select>
-                                </div>
+                                
                             </div>
                             <button name="ok" class="ml-3 ">OK</button>
                         </form>
-                    <?php endif ?>               
+                    <?php endif ?>  
+<div class="overflow">             
    <table class="content-table">
         <thead>
             <tr>
@@ -149,10 +148,9 @@ Session::removeKey("message");
         <?php endif ?>
         </tbody>
     </table>
-
-
+</div>
                     <?php if(!isset($post["ok"])):?>
-                        <div class="pagination mt-2 mb-5 ml-5">    
+                        <div class="pagination mt-2 mb-5 ">    
                             <?php  
                             
                                 if($per_page_record == 0){

@@ -86,7 +86,6 @@ if(Role::isConnected()){
                 $this->validator->isVide($dateNaissance,"dateNaissance");
                 $this->validator->validNum($telephone,"telephone");
                 $this->validator->validSelect($typeEtudiant,"typeEtudiant");
-                //var_dump($typeEtudiant);die;
                 if($typeEtudiant=='nonBoursier'){
                     $this->validator->isVide($adresse,"adresse");
                 }
@@ -94,7 +93,7 @@ if(Role::isConnected()){
                     $this->validator->validSelect($typebourse,"typebourse");
                 }
                 if($typeEtudiant=='boursierLoge'){
-                    $this->validator->validSelect($typebourse,"typebourse");
+                    $this->validator->validSelect($type,"type");
                     $this->validator->validSelect($chambreEtu,"chambreEtu");
                 }
                 if($this->validator->valid()){

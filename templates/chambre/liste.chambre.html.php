@@ -1,24 +1,41 @@
+<?php
+use App\Core\Session;
+if(Session::keyExist("message")){
+    $message = Session::getSession("message");
+    if ($message==1) {
+        echo'
+        <div class="container-fluid p-0">
+            <div  id = "message"  class ="alert alert-success text-center text-success">Chambre ajouter avec succes</div>
+        </div>';
+    }
+}
+
+Session::removeKey("message");
+
+?>
 <?php if($url[1]=='listeChambre'):?>
-     <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/addChambre' ?>" role="button">Ajouter +</a>
-     <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/ChambreArchivee' ?>" role="button">Listes des archivées</a>
-     <form method="POST" action="<?=WEBROOT."chambre/listeChambre"?>" class="form-inline  mt-2 ml-4 remakeSelct">
-                            <div class="form-group ml-5">
-                                <div class="form-group">
-                                    <label for="">Pavillon</label>
-                                    <select class="form-control ml-2" name="chambre" id="" value="">
-                                    <?php foreach ($pavillons  as $pavillon):?>
-                                        <option value="<?=$pavillon->idpavillon?>"><?=' pavillon '.$pavillon->numpavillon?></option>;
-                                    <?php endforeach?>   
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <button name="ok" class="ml-3 ">OK</button>
-                        </form>
+        <div class="int">
+            <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/addChambre' ?>" role="button">Ajouter +</a>
+            <a name="" id="" class="btn btn-success ml-auto  mb-3 float-right mt-2  " href="<?= WEBROOT . 'chambre/ChambreArchivee' ?>" role="button">Listes des archivées</a>
+        </div>
+            <form method="POST" action="<?=WEBROOT."chambre/listeChambre"?>" class="form-inline  mt-2 ml-4 remakeSelct">
+                <div class="form-group ml-4">
+                    
+                        <label class="ml-4">Pavillon</label>
+                        <select class="form-control ml-3 " name="chambre" id="" value="">
+                            <?php foreach ($pavillons  as $pavillon):?>
+                                <option value="<?=$pavillon->idpavillon?>"><?=' pavillon '.$pavillon->numpavillon?></option>;
+                            <?php endforeach?>   
+                        </select>
+                   
+                </div>               
+                <button name="ok" class="ml-4">OK</button>
+            </form>
+        
 <?php endif ?>
 
-
-    <table class="content-table" id="">
+<div class="overflow">
+<table class="content-table" id="">
         <thead>
             <tr class="tittle">
                 <th></th>
@@ -125,8 +142,10 @@
         <?php endif ?>
         </tbody>
     </table>
+</div>
+    
                     <?php if(!isset($post["ok"])):?>
-                        <div class="pagination mt-2 mb-5 ml-5">    
+                        <div class="pagination mt-2 mb-5 ">    
                             <?php  
                             
                                 if($per_page_record == 0){

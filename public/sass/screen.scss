@@ -13,7 +13,6 @@ body{
     font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 0;
-    
 }
 body:focus{
   outline: none;
@@ -38,7 +37,6 @@ body:focus{
         background: $white;
         padding: 30px;
         width: $fullWidth;
-        max-width: 600px;
         position: relative;
         padding: 0;
         @include box-shadow(0 30px 60px 0 rgba(0, 0, 0, 0.3));
@@ -61,7 +59,7 @@ body:focus{
     }
     #formConten {
         @extend #formContent;
-        max-width: 90%;
+
         margin-top: 0;
         .justify{
             display: flex;
@@ -192,7 +190,7 @@ nav{
         align-items: center;
         justify-content: space-between;
         margin: auto;
-        padding: 0 50px;
+        padding: 0 ;
         .nav-links{
             line-height: 70px;
             height: $fullWidth;
@@ -287,7 +285,7 @@ nav{
                 position: absolute;
                 line-height: 40px;
                 text-align: center;
-                font-size: 15px;
+                font-size: 16px;
                 color: $white;
                 font-weight: 600;
                 cursor: pointer;
@@ -333,7 +331,8 @@ nav{
         @media (max-width:800px){
             .bx-menu{
                 display: block;
-                font-size: 25px;
+                font-size: 40px;
+                margin-left: 5px;
                 color: $white;
             }
             .nav-links{
@@ -421,16 +420,17 @@ nav{
     text-align: center;
     .archi{
         a:hover{
-            
-                color: red;
-            
+            color: red;
         }
     }
     td {
         padding: 18px 20px;
         text-align: center;
+        white-space: nowrap;
+
         
         a{
+            white-space: nowrap;
             text-decoration: none;
             color: #000;
             &:hover{
@@ -471,13 +471,15 @@ nav{
         }
     }
     th{
+        white-space: nowrap;
+
         @extend td;
     }
 }
 .row{
     display: flex;
-    margin: 0;
-    justify-content: space-between;
+    margin: 0   ;
+    justify-content: center;
     input[type=text],input[type=date],
     input[type=tel]{
         width: $widthRow;
@@ -530,5 +532,30 @@ nav{
         }
     } 
 
-   
+    @media (max-width:990px){
+        .overflow{
+            overflow: auto;
+        }
+        .int{
+            overflow: auto;
+        }
+        .remakeSelct{
+            display: flex;
+        }
+        .row{
+           
+            justify-content: center;
+            input[type=text],input[type=date],
+            input[type=tel]{
+                width: 345px;
+            }
+        }
+        .wrapper{
+            #formConten{
+                max-width: 100%;
+            }
+        }
+       
+    }
+
     

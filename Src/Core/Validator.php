@@ -16,13 +16,16 @@
            $this->erreurs[$key] ="Ce login existe déjà";
         }elseif(empty($field)){
             $this->erreurs[$key] ="Ce Champ est Obligatoire";
-         }
+        }elseif(!filter_var($field, FILTER_VALIDATE_EMAIL)) {
+            $this->erreurs[$key] ="Email invalide";
+        }
    }
-      public  function  isVide(string $field,string $key){
-           if(empty($field)){
-              $this->erreurs[$key] ="Ce Champ est Obligatoire";
-           }
-      }
+ //  ^(77|78|75|70|76)[0-9]{7}$
+    public  function  isVide(string $field,string $key){
+        if(empty($field)){
+            $this->erreurs[$key] ="Ce Champ est Obligatoire";
+        }
+    }
       public  function  validNum(string $field,string $key){
         if(empty($field)){
            $this->erreurs[$key] ="Ce Champ est Obligatoire";

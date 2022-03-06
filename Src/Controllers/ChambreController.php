@@ -102,7 +102,8 @@ if(Role::isConnected()){
         public  function ajoutChambre(){
             if($this->request->isPost()){
                 extract($this->request->request());
-
+                $nbretage = $this->pavi->findById($idPavillon);
+                $nbretage = $nbretage[0]->nbreetage;
                 Session::setSession("numChambre",$numChambre);
                 Session::setSession("numEtage",$numEtage);
                 Session::setSession("typeChambre",$typeChambre);
@@ -111,7 +112,15 @@ if(Role::isConnected()){
                 $this->validator->validNum($numChambre,"numChambre");
                 $this->validator->validNum($numEtage,"numEtage");
                 $this->validator->validSelect($typeChambre,"typeChambre");
-                
+
+                if($nbretage < $numEtage){
+                    Session::setSession("message", 0);
+                    if((int)$id != 0){
+                        $this->redirect("chambre/edit/".$id);
+                     }elseif((int)$id==0){
+                         $this->redirect("chambre/addChambre");
+                     }
+                }
                 if($this->validator->valid()){
                     $this->chambres->setNumChambre((int)$numChambre)
                                     ->setNumEtage((int)$numEtage)
@@ -132,6 +141,7 @@ if(Role::isConnected()){
                         $insert=$this->chambres->fromArrayUpdate($this->chambres);
                         $this->main->update($insert);
                     }
+                    Session::setSession("message", 1);
                     $this->redirect("chambre/listeChambre"); 
                 }else{
                     Session::setSession("errors",$this->validator->getErreurs() );

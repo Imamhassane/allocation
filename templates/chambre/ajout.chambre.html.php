@@ -1,9 +1,20 @@
 <?php
 use App\Core\Session;
+use Laminas\Stdlib\Message;
+
 $arrErrors=[];
 if(Session::keyExist("errors")){
     $arrErrors=Session::getSession("errors");
     Session::removeKey("errors");
+}
+if(Session::keyExist("message")){
+    $message = Session::getSession("message");
+    if ($message ==0){
+        echo'
+        <div class="container-fluid p-0">
+            <div  id = "message"  class ="alert alert-danger text-center text-danger">Numéro étage indisponible dans ce pavillon </div>
+        </div>';
+    }
 }
 
 ?>
